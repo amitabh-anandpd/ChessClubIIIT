@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard - IIIT Hyderabad Chess Club</title>
+  <meta name="description" content="Current rankings and ratings of IIIT Hyderabad Chess Club members across different formats.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content">
+        <a href="index.html" class="nav-logo">
+          IIIT Hyderabad Chess Club
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="leaderboard.html" class="nav-link">Leaderboard</a></li>
+          <li><a href="tournaments.html" class="nav-link">Tournaments</a></li>
+          <li><a href="newsletters.html" class="nav-link">Newsletters</a></li>
+          <li><a href="profile.html" class="nav-link">Profile</a></li>
+        </ul>
+        
+        <div class="nav-controls">
+          <button class="theme-toggle" aria-label="Toggle theme">🔄</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="margin-top: 2rem;">
+    <div class="flex items-center justify-between mb-6">
+      <h1>Club Rankings</h1>
+      <div class="text-muted" style="font-size: 0.875rem;">
+        <span class="badge badge-success">▲</span> Up
+        <span class="badge badge-danger">▼</span> Down  
+        <span class="badge badge-neutral">=</span> No Change
+      </div>
+    </div>
+
+    <!-- Overall Rankings -->
+    <div class="card mb-6">
+      <h2>Overall Rankings</h2>
+      <p class="text-muted mb-4">Based on classical ratings and recent tournament performance</p>
+      
+      <div class="table-container">
+        <div class="table-scroll">
+          <table class="table" id="overall-rankings">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Change</th>
+                <th>Player</th>
+                <th>Rating</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Format-specific Rankings -->
+    <div class="grid grid-2">
+      <!-- Rapid Rankings -->
+      <div class="card">
+        <h3>Rapid Rankings</h3>
+        <p class="text-muted mb-4">Top 5 players in rapid format</p>
+        
+        <div class="table-container">
+          <table class="table" id="rapid-rankings">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Rating</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Blitz Rankings -->
+      <div class="card">
+        <h3>Blitz Rankings</h3>
+        <p class="text-muted mb-4">Top 5 players in blitz format</p>
+        
+        <div class="table-container">
+          <table class="table" id="blitz-rankings">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Rating</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rating System Info -->
+    <div class="card mt-6">
+      <h3>About Our Rating System</h3>
+      <div class="grid grid-2">
+        <div>
+          <h4>Classical Chess</h4>
+          <p>Games with time controls of 30 minutes or more per player. Our primary rating system for overall rankings and tournament seeding.</p>
+        </div>
+        <div>
+          <h4>Rapid & Blitz</h4>
+          <p>Separate ratings maintained for rapid (10-30 minutes) and blitz (under 10 minutes) formats, encouraging participation across all time controls.</p>
+        </div>
+      </div>
+      
+      <div class="mt-4 text-muted" style="font-size: 0.875rem;">
+        <strong>Note:</strong> Ratings are updated after each tournament and synchronized with external platforms where applicable. 
+        New members start with a provisional rating based on their performance in the first 5 games.
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="mailto:chess@iiit.ac.in">chess@iiit.ac.in</a>
+          <a href="#">Chess.com Team</a>
+          <a href="#">Lichess Team</a>
+          <a href="#">Instagram</a>
+        </div>
+        <div class="footer-info">
+          <p>&copy; 2025 IIIT Hyderabad Chess Club. Part of the International Institute of Information Technology, Hyderabad.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tournaments - IIIT Hyderabad Chess Club</title>
+  <meta name="description" content="Upcoming and past tournaments organized by IIIT Hyderabad Chess Club. Join competitive chess events.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content">
+        <a href="index.html" class="nav-logo">
+          IIIT Hyderabad Chess Club
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="leaderboard.html" class="nav-link">Leaderboard</a></li>
+          <li><a href="tournaments.html" class="nav-link">Tournaments</a></li>
+          <li><a href="newsletters.html" class="nav-link">Newsletters</a></li>
+          <li><a href="profile.html" class="nav-link">Profile</a></li>
+        </ul>
+        
+        <div class="nav-controls">
+          <button class="theme-toggle" aria-label="Toggle theme">🔄</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="margin-top: 2rem;">
+    <div class="text-center mb-6">
+      <h1>Chess Tournaments</h1>
+      <p class="text-muted">Competitive chess events for all skill levels</p>
+    </div>
+
+    <!-- Upcoming Tournaments -->
+    <section class="mb-6">
+      <h2 class="mb-4">🏆 Upcoming Tournaments</h2>
+      <div id="upcoming-tournaments" class="grid grid-2">
+        <!-- Populated by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Tournament Information -->
+    <div class="card mb-6">
+      <h3>Tournament Information</h3>
+      <div class="grid grid-2">
+        <div>
+          <h4>Registration Process</h4>
+          <p>All club members can participate in our tournaments. Registration typically opens 2 weeks before each event.</p>
+          <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+            <li>Fill out the registration form</li>
+            <li>Pay the entry fee (if applicable)</li>
+            <li>Receive confirmation and pairing details</li>
+            <li>Attend the player's meeting</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Tournament Formats</h4>
+          <p>We organize various formats to suit different preferences and skill levels:</p>
+          <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+            <li><strong>Classical:</strong> 90 minutes + 30 second increment</li>
+            <li><strong>Rapid:</strong> 25 minutes + 10 second increment</li>
+            <li><strong>Blitz:</strong> 5 minutes + 3 second increment</li>
+            <li><strong>Swiss System:</strong> Most common pairing method</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Past Tournaments -->
+    <section class="mb-6">
+      <h2 class="mb-4">📚 Tournament History</h2>
+      <div id="past-tournaments" class="grid grid-2">
+        <!-- Populated by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Tournament Rules -->
+    <div class="card mb-6">
+      <h3>Tournament Rules & Guidelines</h3>
+      <div class="grid grid-2">
+        <div>
+          <h4>General Rules</h4>
+          <ul style="margin-left: 1.5rem;">
+            <li>FIDE Laws of Chess apply to all tournaments</li>
+            <li>No outside assistance or electronic devices</li>
+            <li>Players must record their games in classical events</li>
+            <li>Punctuality is required - default time is 30 minutes</li>
+            <li>Respectful conduct expected at all times</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Rating & Prizes</h4>
+          <ul style="margin-left: 1.5rem;">
+            <li>All rated tournaments affect club rankings</li>
+            <li>Prizes awarded for top finishers</li>
+            <li>Special recognition for best junior performance</li>
+            <li>Rating categories may have separate prizes</li>
+            <li>Perfect attendance awards for regular players</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats and Records -->
+    <div class="card mb-6">
+      <h3>Tournament Statistics</h3>
+      <div class="grid grid-3">
+        <div class="text-center">
+          <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent);">47</div>
+          <div class="text-muted">Tournaments Held</div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Since 2020</div>
+        </div>
+        <div class="text-center">
+          <div style="font-size: 2.5rem; font-weight: bold; color: var(--success);">312</div>
+          <div class="text-muted">Total Participants</div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Unique players</div>
+        </div>
+        <div class="text-center">
+          <div style="font-size: 2.5rem; font-weight: bold; color: var(--warning);">1,847</div>
+          <div class="text-muted">Games Played</div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Recorded games</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Champions Gallery -->
+    <div class="card mb-6">
+      <h3>Recent Champions</h3>
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Tournament</th>
+              <th>Winner</th>
+              <th>Score</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Autumn Open 2024</td>
+              <td><a href="profile.html" class="match-opponent">Arjun Patel</a></td>
+              <td>6.5/7</td>
+              <td>Nov 2024</td>
+            </tr>
+            <tr>
+              <td>Blitz Championship 2024</td>
+              <td><a href="profile.html" class="match-opponent">Priya Sharma</a></td>
+              <td>8/9</td>
+              <td>Oct 2024</td>
+            </tr>
+            <tr>
+              <td>Rapid Open 2024</td>
+              <td><a href="profile.html" class="match-opponent">Vikash Kumar</a></td>
+              <td>5/6</td>
+              <td>Sep 2024</td>
+            </tr>
+            <tr>
+              <td>Summer Championship</td>
+              <td><a href="profile.html" class="match-opponent">Ananya Singh</a></td>
+              <td>7/9</td>
+              <td>Jul 2024</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="card text-center" style="background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: white;">
+      <div style="padding: 1rem;">
+        <h3 style="color: white; margin-bottom: 1rem;">Ready to Compete?</h3>
+        <p style="color: rgba(255,255,255,0.9); margin-bottom: 2rem;">
+          Join our next tournament and test your skills against fellow club members. 
+          All skill levels welcome!
+        </p>
+        <div class="flex gap-4 justify-center">
+          <a href="mailto:chess@iiit.ac.in?subject=Tournament Registration" 
+             class="btn" style="background: white; color: var(--accent);">
+            Register Now
+          </a>
+          <a href="leaderboard.html" 
+             class="btn" style="border: 2px solid white; background: transparent; color: white;">
+            View Rankings
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="mailto:chess@iiit.ac.in">chess@iiit.ac.in</a>
+          <a href="#">Chess.com Team</a>
+          <a href="#">Lichess Team</a>
+          <a href="#">Instagram</a>
+        </div>
+        <div class="footer-info">
+          <p>&copy; 2025 IIIT Hyderabad Chess Club. Part of the International Institute of Information Technology, Hyderabad.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

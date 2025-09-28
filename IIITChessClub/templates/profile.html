@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Profile - IIIT Hyderabad Chess Club</title>
+  <meta name="description" content="Chess player profile with ratings, match history, and tournament results.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content">
+        <a href="index.html" class="nav-logo">
+          IIIT Hyderabad Chess Club
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="leaderboard.html" class="nav-link">Leaderboard</a></li>
+          <li><a href="tournaments.html" class="nav-link">Tournaments</a></li>
+          <li><a href="newsletters.html" class="nav-link">Newsletters</a></li>
+          <li><a href="profile.html" class="nav-link">Profile</a></li>
+        </ul>
+        
+        <div class="nav-controls">
+          <button class="theme-toggle" aria-label="Toggle theme">🔄</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="margin-top: 2rem;">
+    <!-- Profile Header -->
+    <div class="card mb-6">
+      <div class="profile-header">
+        <div class="avatar">AP</div>
+        <div class="profile-info">
+          <h2>Arjun Patel</h2>
+          <div class="profile-meta">
+            B.Tech Computer Science, 2022 Batch<br>
+            <a href="https://chess.com/member/arjun_patel_iiit" target="_blank" class="text-accent">Chess.com</a> • 
+            <a href="https://lichess.org/@/arjunpatel_iiit" target="_blank" class="text-accent">Lichess</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ratings Overview -->
+    <div class="card mb-6">
+      <h3>Current Ratings</h3>
+      <div class="ratings-grid">
+        <div class="rating-card">
+          <span class="rating-value" id="rapid-rating">2145</span>
+          <span class="rating-label">Rapid</span>
+        </div>
+        <div class="rating-card">
+          <span class="rating-value" id="blitz-rating">2089</span>
+          <span class="rating-label">Blitz</span>
+        </div>
+        <div class="rating-card">
+          <span class="rating-value">2156</span>
+          <span class="rating-label">Classical</span>
+        </div>
+        <div class="rating-card">
+          <span class="rating-value">#1</span>
+          <span class="rating-label">Club Rank</span>
+        </div>
+      </div>
+      
+      <!-- Placeholder for rating history charts -->
+      <div class="mt-4">
+        <h4>Rating Progress</h4>
+        <div class="flex gap-4">
+          <div class="card" style="flex: 1; padding: 2rem; text-align: center; color: var(--text-secondary);">
+            <canvas width="200" height="100" style="border: 1px dashed var(--border); border-radius: 4px;">
+              Rapid Rating History
+            </canvas>
+            <div class="mt-2">Rapid History</div>
+          </div>
+          <div class="card" style="flex: 1; padding: 2rem; text-align: center; color: var(--text-secondary);">
+            <canvas width="200" height="100" style="border: 1px dashed var(--border); border-radius: 4px;">
+              Blitz Rating History  
+            </canvas>
+            <div class="mt-2">Blitz History</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-2">
+      <!-- Recent Matches -->
+      <div class="card">
+        <h3>Recent Matches</h3>
+        <div id="match-history">
+          <!-- Populated by JavaScript -->
+        </div>
+        <a href="#" class="btn btn-secondary btn-small mt-4">View All Games</a>
+      </div>
+
+      <!-- Tournament Results -->
+      <div class="card">
+        <h3>Tournament History</h3>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Tournament</th>
+                <th>Date</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Autumn Open 2024</td>
+                <td>Nov 15</td>
+                <td><span class="badge badge-success">1st Place</span></td>
+              </tr>
+              <tr>
+                <td>Rapid Championship</td>
+                <td>Oct 28</td>
+                <td><span class="badge badge-warning">3rd Place</span></td>
+              </tr>
+              <tr>
+                <td>Blitz Tournament</td>
+                <td>Sep 20</td>
+                <td><span class="badge badge-warning">2nd Place</span></td>
+              </tr>
+              <tr>
+                <td>Inter-College Open</td>
+                <td>Aug 15</td>
+                <td><span class="badge badge-success">1st Place</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <a href="tournaments.html" class="btn btn-secondary btn-small mt-4">View All Tournaments</a>
+      </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="card mt-6">
+      <h3>Performance Statistics</h3>
+      <div class="grid grid-3">
+        <div class="text-center">
+          <div style="font-size: 2rem; font-weight: bold; color: var(--accent);">47</div>
+          <div class="text-muted">Total Games</div>
+        </div>
+        <div class="text-center">
+          <div style="font-size: 2rem; font-weight: bold; color: var(--success);">68%</div>
+          <div class="text-muted">Win Rate</div>
+        </div>
+        <div class="text-center">
+          <div style="font-size: 2rem; font-weight: bold; color: var(--accent);">5</div>
+          <div class="text-muted">Tournaments Won</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Future Integration Note -->
+    <div class="card mt-6" style="border: 1px dashed var(--border); background: var(--muted);">
+      <h4>🔧 Profile Enhancement Coming Soon</h4>
+      <p class="text-muted">
+        We're working on integrating live data from Chess.com and Lichess APIs to show:
+        real-time ratings, recent games with full analysis, opening repertoire statistics, 
+        and detailed performance metrics. Authentication and profile editing features will be added soon.
+      </p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="mailto:chess@iiit.ac.in">chess@iiit.ac.in</a>
+          <a href="#">Chess.com Team</a>
+          <a href="#">Lichess Team</a>
+          <a href="#">Instagram</a>
+        </div>
+        <div class="footer-info">
+          <p>&copy; 2025 IIIT Hyderabad Chess Club. Part of the International Institute of Information Technology, Hyderabad.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
