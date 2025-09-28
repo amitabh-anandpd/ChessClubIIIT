@@ -1,26 +1,27 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leaderboard - IIIT Hyderabad Chess Club</title>
   <meta name="description" content="Current rankings and ratings of IIIT Hyderabad Chess Club members across different formats.">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
       <div class="nav-content">
-        <a href="index.html" class="nav-logo">
+        <a href="{% url 'home' %}" class="nav-logo">
           IIIT Hyderabad Chess Club
         </a>
         
         <ul class="nav-links">
-          <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="leaderboard.html" class="nav-link">Leaderboard</a></li>
-          <li><a href="tournaments.html" class="nav-link">Tournaments</a></li>
-          <li><a href="newsletters.html" class="nav-link">Newsletters</a></li>
-          <li><a href="profile.html" class="nav-link">Profile</a></li>
+          <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+          <li><a href="{% url 'leaderboard' %}" class="nav-link">Leaderboard</a></li>
+          <li><a href="{% url 'tournaments' %}" class="nav-link">Tournaments</a></li>
+          <li><a href="{% url 'newsletters' %}" class="nav-link">Newsletters</a></li>
+          <li><a href="{% url 'profile' %}" class="nav-link">Profile</a></li>
         </ul>
         
         <div class="nav-controls">
@@ -146,6 +147,6 @@
     </div>
   </footer>
 
-  <script src="assets/js/main.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
