@@ -12,9 +12,6 @@ if env_path.exists():
 def home(request):
     return render(request, 'home.html')
 
-def leaderboard(request):
-    return render(request, 'leaderboard.html')
-
 def profile(request):
     return render(request, 'profile.html')
 

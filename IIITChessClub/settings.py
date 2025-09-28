@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'IIITChessClub',
     'accounts',
-    'leaderbaord',
+    'leaderboard',
     'newsletters',
     'tournaments',
 ]
