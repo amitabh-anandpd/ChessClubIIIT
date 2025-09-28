@@ -1,26 +1,27 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IIIT Hyderabad Chess Club</title>
   <meta name="description" content="Official website of the International Institute of Information Technology Hyderabad Chess Club. Join us for tournaments, training, and chess excellence.">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
       <div class="nav-content">
-        <a href="index.html" class="nav-logo">
+        <a href="{% url 'home' %}" class="nav-logo">
           IIIT Hyderabad Chess Club
         </a>
         
         <ul class="nav-links">
-          <li><a href="index.html" class="nav-link">Home</a></li>
-          <li><a href="leaderboard.html" class="nav-link">Leaderboard</a></li>
-          <li><a href="tournaments.html" class="nav-link">Tournaments</a></li>
-          <li><a href="newsletters.html" class="nav-link">Newsletters</a></li>
-          <li><a href="profile.html" class="nav-link">Profile</a></li>
+          <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+          <li><a href="{% url 'leaderboard' %}" class="nav-link">Leaderboard</a></li>
+          <li><a href="{% url 'tournaments' %}" class="nav-link">Tournaments</a></li>
+          <li><a href="{% url 'newsletters' %}" class="nav-link">Newsletters</a></li>
+          <li><a href="{% url 'profile' %}" class="nav-link">Profile</a></li>
         </ul>
         
         <div class="nav-controls">
@@ -38,8 +39,8 @@
           <h1>IIIT Hyderabad Chess Club</h1>
           <p>Fostering strategic thinking and competitive excellence in the game of chess</p>
           <div class="hero-actions">
-            <a href="leaderboard.html" class="btn btn-primary">View Leaderboard</a>
-            <a href="tournaments.html" class="btn btn-secondary">Next Tournament</a>
+            <a href="{% url 'leaderboard' %}" class="btn btn-primary">View Leaderboard</a>
+            <a href="{% url 'tournaments' %}" class="btn btn-secondary">Next Tournament</a>
           </div>
         </div>
       </div>
@@ -56,7 +57,7 @@
           <div id="top-players" class="flex flex-col gap-4">
             <!-- Rendered by JavaScript -->
           </div>
-          <a href="leaderboard.html" class="btn btn-secondary btn-small mt-4">View Full Rankings</a>
+          <a href="{% url 'leaderboard' %}" class="btn btn-secondary btn-small mt-4">View Full Rankings</a>
         </div>
         
         <!-- Next Tournament Card -->
@@ -65,7 +66,7 @@
           <div id="next-tournament">
             <!-- Rendered by JavaScript -->
           </div>
-          <a href="tournaments.html" class="btn btn-secondary btn-small mt-4">All Tournaments</a>
+          <a href="{% url 'tournaments' %}" class="btn btn-secondary btn-small mt-4">All Tournaments</a>
         </div>
         
         <!-- Latest Newsletter Card -->
@@ -74,7 +75,7 @@
           <div id="latest-newsletter">
             <!-- Rendered by JavaScript -->
           </div>
-          <a href="newsletters.html" class="btn btn-secondary btn-small mt-4">All Newsletters</a>
+          <a href="{% url 'newsletters' %}" class="btn btn-secondary btn-small mt-4">All Newsletters</a>
         </div>
       </div>
     </section>
@@ -119,6 +120,6 @@
     </div>
   </footer>
 
-  <script src="assets/js/main.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

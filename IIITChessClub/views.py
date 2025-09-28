@@ -17,3 +17,9 @@ def leaderboard(request):
 
 def profile(request):
     return render(request, 'profile.html')
+
+def tournaments(request):
+    return render(request, 'tournaments.html')
+
+def newsletters(request):
+    return render(request, 'newsletters.html')
