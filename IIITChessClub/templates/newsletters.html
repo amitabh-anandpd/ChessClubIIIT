@@ -50,7 +50,7 @@
           Our comprehensive quarterly review featuring tournament highlights, new member spotlights, 
           upcoming events, and a special interview with our recent state championship winner.
         </p>
-        <a href="newsletter-article.html?slug=winter-2025-quarterly" class="btn" style="background: white; color: var(--accent);">
+        <a href="{% url 'newsletter-article' article=article.name %}" class="btn" style="background: white; color: var(--accent);">
           Read Featured Article
         </a>
       </div>
