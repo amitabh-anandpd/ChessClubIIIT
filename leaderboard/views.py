@@ -4,6 +4,6 @@ from django.shortcuts import render, redirect
 from accounts.models import User
 
 def leaderboard(request):
-    users = User.objects.all().order_by('rank')
+    users = User.objects.all().order_by('profile.rank')
     return render(request, 'leaderboard.html', {"users": users})
     
