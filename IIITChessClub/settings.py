@@ -31,8 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['.pythonanywhere.com', '127.0.0.1', 'localhost']
 
-AUTH_USER_MODEL = 'accounts.User'
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,6 +46,8 @@ INSTALLED_APPS = [
     'newsletters',
     'tournaments',
 ]
+
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
