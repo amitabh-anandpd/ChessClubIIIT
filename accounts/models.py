@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db import transaction
+from django.db.models import Q
 
 class User(AbstractUser):
     
@@ -20,6 +21,18 @@ class User(AbstractUser):
     @property
     def initials(self):
         return str(self.first_name[0]+self.last_name[0])
+    
+    @property
+    def tournaments(self):
+        from tournaments.models import Tournament
+        return Tournament.objects.filter(
+            Q(matches__player1=self) | Q(matches__player2=self)
+        ).distinct()
+    
+    @property
+    def matches(self):
+        from tournaments.models import Match
+        return Match.objects.filter(Q(player1=self) | Q(player2=self)).select_related("tournament")
 
 
 class UserProfile(models.Model):
