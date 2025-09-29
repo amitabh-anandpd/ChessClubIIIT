@@ -45,4 +45,4 @@ def profile(request, username):
         })
     if not user:
         return redirect("/")
-    return render(request, 'profile.html', context={"user":user, "tournaments":tournaments, "matches": matches})
+    return render(request, 'profile_view.html', context={"user":user, "tournaments":tournaments, "matches": matches})
