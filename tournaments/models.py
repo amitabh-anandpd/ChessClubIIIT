@@ -60,7 +60,7 @@ class Match(models.Model):
         default='PENDING'
     )
 
-    scheduled_at = models.DateTimeField(blank=True, null=True)
+    scheduled_at = models.DateTimeField(timezone.now)
     completed_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
@@ -80,5 +80,5 @@ class Match(models.Model):
         }
     
     class Meta:
-        ordering = ['scheduled_at']
+        ordering = ['-scheduled_at']
         unique_together = ('tournament', 'player1', 'player2')
