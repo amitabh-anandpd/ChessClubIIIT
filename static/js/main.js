@@ -399,26 +399,6 @@ function renderProfile() {
   // Render recent matches
   const matchHistory = document.getElementById('match-history');
   if (matchHistory) {
-    matchHistory.innerHTML = sampleData.matches.map(match => {
-      const resultClass = match.result === 'W' ? 'badge-success' : 
-                         match.result === 'L' ? 'badge-danger' : 'badge-warning';
-      
-      return `
-        <div class="match-item">
-          <div class="match-info">
-            <div>
-              <span class="badge ${resultClass}">${match.result}</span>
-              vs <a href="profile.html" class="match-opponent">${match.opponent}</a>
-            </div>
-            <div class="match-date">${new Date(match.date).toLocaleDateString('en-IN')}</div>
-          </div>
-          <button class="btn btn-secondary btn-small copy-fen" data-fen="${match.fen}">
-            Copy FEN
-          </button>
-        </div>
-      `;
-    }).join('');
-
     // Setup copy FEN buttons
     document.querySelectorAll('.copy-fen').forEach(button => {
       button.addEventListener('click', (e) => {
