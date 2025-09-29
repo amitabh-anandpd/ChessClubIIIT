@@ -58,7 +58,19 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Populated by JavaScript -->
+              {% for user in users %}
+              <tr>
+                <th>{{ user.profile.rank }}</th>
+                <th>
+                  {% if user.profile.moved_up_in_rank %}<span class="badge badge-success">▲</span>
+                  {% elif user.profile.moved_down_in_rank %}<span class="badge badge-danger">▼</span>
+                  {% else %}<span class="badge badge-neutral">=</span>
+                  {% endif %}
+                </th>
+                <th>{{ user.first_name }} {{ user.last_name }}</th>
+                <th>{{ user.profile.rating }}({{user.profile.rating_change}})</th>
+              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
