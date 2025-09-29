@@ -16,6 +16,10 @@ class User(AbstractUser):
             "email": self.email,
             "profile": self.profile.to_dict(),
         }
+    
+    @property
+    def initials(self):
+        return str(self.first_name[0]+self.last_name[0])
 
 
 class UserProfile(models.Model):
