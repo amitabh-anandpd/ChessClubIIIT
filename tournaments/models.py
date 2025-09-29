@@ -45,6 +45,8 @@ class Match(models.Model):
     player2 = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='matches_as_player2'
     )
+    
+    fen = models.TextField(null=True, blank=True)
 
     winner = models.ForeignKey(
         User, on_delete=models.SET_NULL, blank=True, null=True, related_name='matches_won'
@@ -60,7 +62,7 @@ class Match(models.Model):
         default='PENDING'
     )
 
-    scheduled_at = models.DateTimeField(timezone.now)
+    scheduled_at = models.DateTimeField(default=timezone.now)
     completed_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
@@ -82,3 +84,41 @@ class Match(models.Model):
     class Meta:
         ordering = ['-scheduled_at']
         unique_together = ('tournament', 'player1', 'player2')
+
+class TournamentResult(models.Model):
+    tournament = models.ForeignKey(
+        Tournament, on_delete=models.CASCADE, related_name="results"
+    )
+    player = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="tournament_results"
+    )
+    position = models.IntegerField(blank=True, null=True)
+    points = models.FloatField(default=0)
+    wins = models.IntegerField(default=0)
+    draws = models.IntegerField(default=0)
+    losses = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.player.username} - {self.tournament.name} ({self.position or 'N/A'})"
+
+    def badge_class(self):
+        if self.position == 1:
+            return "badge-success"
+        elif self.position == 2:
+            return "badge-warning"
+        elif self.position == 3:
+            return "badge-warning"
+        else:
+            return "badge-secondary"
+
+    def result_text(self):
+        if self.position:
+            if self.position == 1:
+                return "1st Place"
+            elif self.position == 2:
+                return "2nd Place"
+            elif self.position == 3:
+                return "3rd Place"
+            else:
+                return f"{self.position}th Place"
+        return "Participant"
