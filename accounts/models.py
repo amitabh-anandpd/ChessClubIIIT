@@ -35,7 +35,9 @@ class UserProfile(models.Model):
             "id": self.id,
             "user_id": self.user.id,
             "rating": self.rating,
+            "last_rating": self.last_rating,
             "rank": self.rank,
+            "last_rank": self.last_rank,
             "chessdotcom": self.chessdotcom,
             "lichess": self.lichess,
         }
