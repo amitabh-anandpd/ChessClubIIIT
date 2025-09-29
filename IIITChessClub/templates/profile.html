@@ -35,13 +35,16 @@
     <!-- Profile Header -->
     <div class="card mb-6">
       <div class="profile-header">
-        <div class="avatar">AP</div>
+        <div class="avatar">{{ user.initials }}</div>
         <div class="profile-info">
-          <h2>Arjun Patel</h2>
+          <h2>{{ user.first_name }} {{ user.last_name }}</h2>
           <div class="profile-meta">
-            B.Tech Computer Science, 2022 Batch<br>
-            <a href="https://chess.com/member/arjun_patel_iiit" target="_blank" class="text-accent">Chess.com</a> • 
-            <a href="https://lichess.org/@/arjunpatel_iiit" target="_blank" class="text-accent">Lichess</a>
+            {% if user.chessdotcom %}
+            <a href="https://chess.com/member/{{ user.chessdotcom }}" target="_blank" class="text-accent">Chess.com</a>
+            {% endif %}
+            {% if user.lichess %} 
+            <a href="https://lichess.org/@/{{ user.lichess }}" target="_blank" class="text-accent">Lichess</a>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -52,10 +55,10 @@
       <h3>Current Ratings</h3>
       <div class="ratings-grid">
         <div class="rating-card">
-          <span class="rating-value" id="rapid-rating">2145</span>
+          <span class="rating-value" id="rapid-rating">{{ user.profile.rating }}</span>
           <span class="rating-label">Rapid</span>
         </div>
-        <div class="rating-card">
+        <!--div class="rating-card">
           <span class="rating-value" id="blitz-rating">2089</span>
           <span class="rating-label">Blitz</span>
         </div>
@@ -66,10 +69,10 @@
         <div class="rating-card">
           <span class="rating-value">#1</span>
           <span class="rating-label">Club Rank</span>
-        </div>
+        </div-->
       </div>
       
-      <!-- Placeholder for rating history charts -->
+      <!-- Placeholder for rating history charts >
       <div class="mt-4">
         <h4>Rating Progress</h4>
         <div class="flex gap-4">
@@ -87,15 +90,32 @@
           </div>
         </div>
       </div>
-    </div>
+    </div-->
 
     <div class="grid grid-2">
       <!-- Recent Matches -->
       <div class="card">
         <h3>Recent Matches</h3>
-        <div id="match-history">
-          <!-- Populated by JavaScript -->
-        </div>
+          <div id="match-history">
+            {% for match in matches %}
+              <div class="match-item">
+                <div class="match-info">
+                  <div>
+                    <span class="badge {{ match.class }}">{{match.result}}</span>
+                    vs <a href="{% url 'profile' username=opponent.username %}" class="match-opponent">{{match.opponent.username}}</a>
+                  </div>
+                  <div class="match-date">{{ match.date|date:"d M, Y" }}</div>
+                </div>
+                {% if match.fen %}
+                  <button class="btn btn-secondary btn-small copy-fen" data-fen="{{ match.fen }}">
+                    Copy FEN
+                  </button>
+                {% endif %}
+              </div>
+            {% empty %}
+              <p>No matches found.</p>
+            {% endfor %}
+          </div>
         <a href="#" class="btn btn-secondary btn-small mt-4">View All Games</a>
       </div>
 
@@ -103,7 +123,7 @@
       <div class="card">
         <h3>Tournament History</h3>
         <div class="table-container">
-          <table class="table">
+          {% comment %} <table class="table">
             <thead>
               <tr>
                 <th>Tournament</th>
@@ -132,6 +152,26 @@
                 <td>Aug 15</td>
                 <td><span class="badge badge-success">1st Place</span></td>
               </tr>
+            </tbody>
+          </table> {% endcomment %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Tournament</th>
+                <th>Date</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for t in tournaments %}
+                <tr>
+                  <td>{{ t.name }}</td>
+                  <td>{{ t.date|date:"M d, Y" }}</td>
+                  <td><span class="badge {{ t.result_class }}">{{ t.result }}</span></td>
+                </tr>
+              {% empty %}
+                <tr><td colspan="3">No tournaments yet</td></tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
