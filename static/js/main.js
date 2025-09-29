@@ -437,17 +437,6 @@ function renderProfile() {
 }
 
 function renderHomeHighlights() {
-  // Top 3 players
-  const topPlayersContainer = document.getElementById('top-players');
-  if (topPlayersContainer) {
-    const top3 = sampleData.players.slice(0, 3);
-    topPlayersContainer.innerHTML = top3.map((player, index) => `
-      <div class="flex justify-between items-center">
-        <span>${index + 1}. ${player.name}</span>
-        <strong>${player.rating}</strong>
-      </div>
-    `).join('');
-  }
 
   // Next tournament
   const nextTournament = document.getElementById('next-tournament');

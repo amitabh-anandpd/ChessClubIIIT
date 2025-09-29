@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.shortcuts import render, redirect
 import json
+from accounts.models import User, UserProfile
 
 
 from dotenv import load_dotenv
@@ -10,7 +11,8 @@ if env_path.exists():
 
 
 def home(request):
-    return render(request, 'home.html')
+    top_users = User.objects.select_related("profile").order_by("profile__rank")[:5]
+    return render(request, 'home.html', {"top_users": top_users})
 
 def profile(request):
     return render(request, 'profile.html')

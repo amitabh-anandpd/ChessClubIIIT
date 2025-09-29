@@ -55,7 +55,12 @@
         <div class="card">
           <h3>🏆 Top Players</h3>
           <div id="top-players" class="flex flex-col gap-4">
-            <!-- Rendered by JavaScript -->
+            {% for user in top_users %}
+            <div class="flex justify-between items-center">
+              <span>{{ user.profile.rank }} {{ user.first_name }} {{ user.last_name }}</span>
+              <strong>{{ user.profile.rating }}</strong>
+            </div>
+            {% endfor %}
           </div>
           <a href="{% url 'leaderboard' %}" class="btn btn-secondary btn-small mt-4">View Full Rankings</a>
         </div>
