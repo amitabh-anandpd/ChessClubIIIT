@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Page Not Found | IIIT Hyderabad Chess Club</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="error-page">
+  <div class="container text-center" style="margin-top: 10vh;">
+    <h1>404</h1>
+    <p class="text-muted">Oops! The page you're looking for doesn’t exist.</p>
+    <a href="{% url 'home' %}" class="btn btn-primary mt-4">Go Back Home</a>
+  </div>
+</body>
+</html>
