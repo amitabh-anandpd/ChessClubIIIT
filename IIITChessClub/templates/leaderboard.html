@@ -33,7 +33,7 @@
 
   <main class="container" style="margin-top: 2rem;">
     <div class="flex items-center justify-between mb-6">
-      <h1>Club Rankings</h1>
+      <h1>IIIT Rankings</h1>
       <div class="text-muted" style="font-size: 0.875rem;">
         <span class="badge badge-success">▲</span> Up
         <span class="badge badge-danger">▼</span> Down  
@@ -48,27 +48,51 @@
       
       <div class="table-container">
         <div class="table-scroll">
-          <table class="table" id="overall-rankings">
+          <table class="table leaderboard" id="overall-rankings">
             <thead>
               <tr>
                 <th>Rank</th>
-                <th>Change</th>
                 <th>Player</th>
                 <th>Rating</th>
               </tr>
             </thead>
-            <tbody>
+            {% comment %} <tbody>
               {% for user in users %}
               <tr>
-                <th>{{ user.profile.rank }}</th>
                 <th>
-                  {% if user.profile.moved_up_in_rank %}<span class="badge badge-success">▲</span>
-                  {% elif user.profile.moved_down_in_rank %}<span class="badge badge-danger">▼</span>
-                  {% else %}<span class="badge badge-neutral">=</span>
+                  {% if user.profile.moved_up_in_rank %}<span class="badge badge-success">{{ user.profile.rank }}▲</span>
+                  {% elif user.profile.moved_down_in_rank %}<span class="badge badge-danger">{{ user.profile.rank }}▼</span>
+                  {% else %}<span class="badge badge-neutral">{{ user.profile.rank }}=</span>
                   {% endif %}
                 </th>
                 <th>{{ user.first_name }} {{ user.last_name }}</th>
-                <th>{{ user.profile.rating }}({{user.profile.rating_change}})</th>
+                <th>{{ user.profile.rating }}({% if user.profile.rating_change > 0 %}+{%endif%}{{user.profile.rating_change}})</th>
+              </tr>
+              {% endfor %}
+            </tbody> {% endcomment %}
+            <tbody>
+              {% for entry in leaderboard %}
+              <tr>
+                <td>
+                  {% if entry.moved_up %}
+                    <span class="badge badge-success">{{ entry.current_rank }} ▲</span>
+                  {% elif entry.moved_down %}
+                    <span class="badge badge-danger">{{ entry.current_rank }} ▼</span>
+                  {% else %}
+                    <span class="badge badge-neutral">{{ entry.current_rank }} =</span>
+                  {% endif %}
+                </td>
+                <td>{{ entry.user.first_name }} {{ entry.user.last_name }}</td>
+                <td>
+                  {{ entry.user.profile.rating }}
+                  {% with entry.rating_change as change %}
+                    {% if change > 0 %}
+                      <span class="text-success">(+{{ change }})</span>
+                    {% elif change < 0 %}
+                      <span class="text-danger">({{ change }})</span>
+                    {% endif %}
+                  {% endwith %}
+                </td>
               </tr>
               {% endfor %}
             </tbody>
@@ -78,7 +102,7 @@
     </div>
 
     <!-- Format-specific Rankings -->
-    <div class="grid grid-2">
+    {% comment %} <div class="grid grid-2">
       <!-- Rapid Rankings -->
       <div class="card">
         <h3>Rapid Rankings</h3>
@@ -119,7 +143,7 @@
             </tbody>
           </table>
         </div>
-      </div>
+      </div> {% endcomment %}
     </div>
 
     <!-- Rating System Info -->
@@ -128,12 +152,12 @@
       <div class="grid grid-2">
         <div>
           <h4>Classical Chess</h4>
-          <p>Games with time controls of 30 minutes or more per player. Our primary rating system for overall rankings and tournament seeding.</p>
+          <p>Games with time controls of 10 minutes or more per player. Our primary rating system for overall rankings and tournament seeding.</p>
         </div>
-        <div>
+        {% comment %} <div>
           <h4>Rapid & Blitz</h4>
           <p>Separate ratings maintained for rapid (10-30 minutes) and blitz (under 10 minutes) formats, encouraging participation across all time controls.</p>
-        </div>
+        </div> {% endcomment %}
       </div>
       
       <div class="mt-4 text-muted" style="font-size: 0.875rem;">
@@ -159,6 +183,6 @@
     </div>
   </footer>
 
-  <script src="{% static 'js/main.js' %}"></script>
+  <script type="module"   src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

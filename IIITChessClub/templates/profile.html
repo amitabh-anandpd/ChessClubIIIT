@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Profiles - IIIT Hyderabad Chess Club</title>
+  <meta name="description" content="Search and discover chess player profiles in the IIIT Hyderabad Chess Club community.">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content">
+        <a href="{% url 'home' %}" class="nav-logo">
+          IIIT Hyderabad Chess Club
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+          <li><a href="{% url 'leaderboard' %}" class="nav-link">Leaderboard</a></li>
+          <li><a href="{% url 'tournaments' %}" class="nav-link">Tournaments</a></li>
+          <li><a href="{% url 'newsletters' %}" class="nav-link">Newsletters</a></li>
+          <li><a href="{% url 'profile' %}" class="nav-link">Profile</a></li>
+        </ul>
+        
+        <div class="nav-controls">
+          <button class="theme-toggle" aria-label="Toggle theme">🔄</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="margin-top: 2rem;">
+    <div class="text-center mb-6">
+      <h1>Player Profiles</h1>
+      <p class="text-muted">Search and discover members of our chess community</p>
+    </div>
+
+    <!-- Search Section -->
+    <div class="card mb-6">
+      <h3>Search Players</h3>
+      <div class="search-container">
+        <input 
+          type="text" 
+          id="profile-search" 
+          class="search-input" 
+          placeholder="Search by name, rating, or program..."
+          autocomplete="off"
+        >
+        <div class="search-filters">
+          <select id="rating-filter" class="filter-select">
+            <option value="">All Ratings</option>
+            <option value="2000+">2000+</option>
+            <option value="1800-1999">1800-1999</option>
+            <option value="1600-1799">1600-1799</option>
+            <option value="1400-1599">1400-1599</option>
+            <option value="<1400">Under 1400</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Results -->
+    <div class="card mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3>Club Members</h3>
+        <div class="text-muted" id="results-count">Loading...</div>
+      </div>
+      <div id="profile-results" class="profile-grid">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="card">
+      <h3>Community Overview</h3>
+      <div class="grid grid-3">
+        <div class="stat-card">
+          <div class="stat-value">{{ active_count }}</div>
+          <div class="stat-label">Active Members</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ avg_rating }}</div>
+          <div class="stat-label">Average Rating</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ match_count }}</div>
+          <div class="stat-label">Games Played</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="mailto:chess@iiit.ac.in">chess@iiit.ac.in</a>
+          <a href="#">Chess.com Team</a>
+          <a href="#">Lichess Team</a>
+          <a href="#">Instagram</a>
+        </div>
+        <div class="footer-info">
+          <p>&copy; 2025 IIIT Hyderabad Chess Club. Part of the International Institute of Information Technology, Hyderabad.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
