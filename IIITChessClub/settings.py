@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'IIITChessClub',
+    'corsheaders',
     'accounts',
     'leaderboard',
     'newsletters',
@@ -57,6 +57,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://mazinourek.pythonanywhere.com",
+    "http://127.0.0.1:8000"
 ]
 
 ROOT_URLCONF = 'IIITChessClub.urls'
@@ -64,7 +70,7 @@ ROOT_URLCONF = 'IIITChessClub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'IIITChessClub' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
