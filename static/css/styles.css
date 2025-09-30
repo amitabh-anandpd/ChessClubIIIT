@@ -453,18 +453,29 @@ p {
   background-repeat: no-repeat;
 }
 
-.table tr:first-child td:first-child::before {
+.table.leaderboard tr:first-child td:first-child::before {
   content: "🥇";
   margin-right: 0.5rem;
 }
 
-.table tr:nth-child(2) td:first-child::before {
+.table.leaderboard tr:nth-child(2) td:first-child::before {
   content: "🥈";
   margin-right: 0.5rem;
 }
 
-.table tr:nth-child(3) td:first-child::before {
+.table.leaderboard tr:nth-child(3) td:first-child::before {
   content: "🥉";
+  margin-right: 0.5rem;
+}
+.table tr:first-child td:first-child::before {
+  margin-right: 0.5rem;
+}
+
+.table tr:nth-child(2) td:first-child::before {
+  margin-right: 0.5rem;
+}
+
+.table tr:nth-child(3) td:first-child::before {
   margin-right: 0.5rem;
 }
 
