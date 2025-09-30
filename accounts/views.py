@@ -2,6 +2,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.db.models import Q, Avg
+from django.views.decorators.http import require_GET
 
 from .models import User, UserProfile
 from tournaments.models import TournamentResult, Match
@@ -55,10 +56,10 @@ def profile(request):
     match_count = len(Match.objects.all())
     return render(request, 'profile.html', {"active_count": active_count, "avg_rating": avg_rating, "match_count": match_count})
 
+@require_GET
 def api_profiles(request):
     search = request.GET.get('search', '')
     rating = request.GET.get('rating', '')
-    program = request.GET.get('program', '')
 
     users = User.objects.select_related('profile').all()
 
@@ -78,12 +79,12 @@ def api_profiles(request):
             users = users.filter(profile__rating__lt=1400)
 
     data = []
-    for user in users:
+    for index, user in enumerate(users, start=1):
         data.append({
             "username": user.username,
             "name": f"{user.first_name} {user.last_name}".strip() or user.username,
             "rating": user.profile.rating,
-            "rank": user.profile.rank,
+            "rank": index,  # ✅ dynamic rank
             "profile_url": f"/profile/{user.username}/",
         })
     return JsonResponse({"profiles": data})

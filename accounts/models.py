@@ -39,7 +39,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     rating = models.IntegerField(default=600)
     last_rating = models.IntegerField(default=600)
-    rank = models.IntegerField(default=0)
     last_rank = models.IntegerField(default=0)
     chessdotcom = models.CharField(max_length=64, blank=True, null=True)
     lichess = models.CharField(max_length=64, blank=True, null=True)
@@ -53,7 +52,6 @@ class UserProfile(models.Model):
             "user_id": self.user.id,
             "rating": self.rating,
             "last_rating": self.last_rating,
-            "rank": self.rank,
             "last_rank": self.last_rank,
             "chessdotcom": self.chessdotcom,
             "lichess": self.lichess,
@@ -65,11 +63,8 @@ class UserProfile(models.Model):
                 old = UserProfile.objects.get(pk=self.pk)
                 if old.rating != self.rating:
                     self.last_rating = old.rating
-                if old.rank != self.rank:
-                    self.last_rank = old.rank
             else:
                 self.last_rating = self.rating
-                self.last_rank = self.rank
 
             super().save(*args, **kwargs)
     
@@ -78,13 +73,13 @@ class UserProfile(models.Model):
         return self.rating - self.last_rating
 
     @property
-    def rank_change(self):
-        return self.last_rank - self.rank
+    def rank_change(self, current_rank):
+        return self.last_rank - current_rank
 
     @property
-    def moved_up_in_rank(self):
-        return self.rank < self.last_rank
+    def moved_up_in_rank(self, current_rank):
+        return current_rank < self.last_rank
 
     @property
-    def moved_down_in_rank(self):
-        return self.rank > self.last_rank
+    def moved_down_in_rank(self, current_rank):
+        return current_rank > self.last_rank
