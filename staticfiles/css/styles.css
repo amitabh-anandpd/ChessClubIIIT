@@ -134,6 +134,26 @@ p, h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
 }
 
+.stat-card {
+  background: transparent;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #58a6ff;
+}
+
+.stat-label {
+  color: #8b949e;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.flex.items-center.justify-between.mb-4 {
+  align-items: baseline;
+}
+
 .items-center {
   align-items: center;
 }
@@ -514,7 +534,64 @@ p {
   font-size: 0.7rem;
 }
 
+.search-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  min-width: 250px;
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  color: #e6edf3;
+}
+
+.filter-select {
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  color: #e6edf3;
+}
+
 /* Profile Specific */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.profile-card {
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.profile-card:hover {
+  border-color: #58a6ff;
+  transform: translateY(-3px);
+}
+
+.profile-name a {
+  color: #58a6ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.profile-rating,
+.profile-rank {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  color: #c9d1d9;
+}
+
 .profile-header {
   display: flex;
   align-items: center;
