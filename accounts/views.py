@@ -1,11 +1,12 @@
 from django.conf import settings
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.db.models import Q
+from django.db.models import Q, Avg
 
-from .models import User
-from tournaments.models import TournamentResult
+from .models import User, UserProfile
+from tournaments.models import TournamentResult, Match
 
-def profile(request, username):
+def user_profile(request, username):
     user = User.objects.filter(username=username).first()
     results = (
         TournamentResult.objects
@@ -46,3 +47,43 @@ def profile(request, username):
     if not user:
         return redirect("/")
     return render(request, 'profile_view.html', context={"user":user, "tournaments":tournaments, "matches": matches})
+
+def profile(request):
+    users = User.objects.all()
+    active_count = len(users)
+    avg_rating = int(UserProfile.objects.aggregate(avg=Avg('rating'))['avg'])
+    match_count = len(Match.objects.all())
+    return render(request, 'profile.html', {"active_count": active_count, "avg_rating": avg_rating, "match_count": match_count})
+
+def api_profiles(request):
+    search = request.GET.get('search', '')
+    rating = request.GET.get('rating', '')
+    program = request.GET.get('program', '')
+
+    users = User.objects.select_related('profile').all()
+
+    if search:
+        users = users.filter(username__icontains=search)
+
+    if rating:
+        if rating == '2000+':
+            users = users.filter(profile__rating__gte=2000)
+        elif rating == '1800-1999':
+            users = users.filter(profile__rating__gte=1800, profile__rating__lte=1999)
+        elif rating == '1600-1799':
+            users = users.filter(profile__rating__gte=1600, profile__rating__lte=1799)
+        elif rating == '1400-1599':
+            users = users.filter(profile__rating__gte=1400, profile__rating__lte=1599)
+        elif rating == '<1400':
+            users = users.filter(profile__rating__lt=1400)
+
+    data = []
+    for user in users:
+        data.append({
+            "username": user.username,
+            "name": f"{user.first_name} {user.last_name}".strip() or user.username,
+            "rating": user.profile.rating,
+            "rank": user.profile.rank,
+            "profile_url": f"/profile/{user.username}/",
+        })
+    return JsonResponse({"profiles": data})
