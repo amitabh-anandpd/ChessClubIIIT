@@ -25,7 +25,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('', include('leaderboard.urls')),
     path('', include('accounts.urls')),
+    path('newsletters/', include('newsletters.urls')),
     path('tournaments/', tournaments, name='tournaments'),
-    path('newsletters/', newsletters, name='newsletters'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 #handler404 = 'IIITChessClub.views.custom_404_view'
