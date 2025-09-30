@@ -11,11 +11,8 @@ if env_path.exists():
 
 
 def home(request):
-    top_users = User.objects.select_related("profile").order_by("profile__rank")[:5]
+    top_users = User.objects.select_related("profile").order_by("-profile__rating")[:5]
     return render(request, 'home.html', {"top_users": top_users})
-
-def profile(request):
-    return render(request, 'profile.html')
 
 def tournaments(request):
     return render(request, 'tournaments.html')
