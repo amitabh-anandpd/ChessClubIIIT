@@ -1,95 +1,3 @@
-// IIIT Hyderabad Chess Club - Main JavaScript
-
-// Sample data for realistic layouts
-const sampleData = {
-  players: [
-    { name: "Arjun Patel", rating: 2156, delta: 1, rapid: 2145, blitz: 2089 },
-    { name: "Priya Sharma", rating: 2134, delta: -1, rapid: 2167, blitz: 2098 },
-    { name: "Vikash Kumar", rating: 2089, delta: 0, rapid: 2034, blitz: 2156 },
-    { name: "Ananya Singh", rating: 2067, delta: 2, rapid: 2078, blitz: 2045 },
-    { name: "Rohit Gupta", rating: 2034, delta: -2, rapid: 2056, blitz: 2012 },
-    { name: "Meera Reddy", rating: 2021, delta: 1, rapid: 1998, blitz: 2067 },
-    { name: "Karan Joshi", rating: 1987, delta: 0, rapid: 2001, blitz: 1943 },
-    { name: "Sneha Iyer", rating: 1976, delta: 1, rapid: 1954, blitz: 2009 }
-  ],
-  
-  tournaments: [
-    {
-      name: "IIIT Winter Championship 2025",
-      date: "2025-02-15T09:00:00",
-      type: "upcoming",
-      format: "Classical",
-      rounds: 7
-    },
-    {
-      name: "Rapid Rating Tournament",
-      date: "2025-01-25T14:00:00",
-      type: "upcoming", 
-      format: "Rapid",
-      rounds: 5
-    },
-    {
-      name: "Autumn Open 2024",
-      date: "2024-11-15T09:00:00",
-      type: "past",
-      winner: "Arjun Patel",
-      format: "Classical"
-    },
-    {
-      name: "Blitz Championship 2024",
-      date: "2024-10-20T16:00:00", 
-      type: "past",
-      winner: "Priya Sharma",
-      format: "Blitz"
-    }
-  ],
-
-  newsletters: [
-    {
-      title: "Chess Club Quarterly - Winter 2025",
-      excerpt: "A comprehensive look at our recent tournaments, new member spotlights, and upcoming events for the winter season.",
-      date: "2025-01-10",
-      author: "Editorial Team",
-      slug: "winter-2025-quarterly"
-    },
-    {
-      title: "Mastering Endgames: Practical Tips",
-      excerpt: "Essential endgame techniques every intermediate player should know, with analysis from our club experts.",
-      date: "2024-12-15",
-      author: "IM Rajesh Nair",
-      slug: "mastering-endgames-tips"
-    },
-    {
-      title: "Tournament Report: Autumn Open 2024",
-      excerpt: "Complete coverage of our biggest tournament of the year, featuring game highlights and player interviews.",
-      date: "2024-11-20",
-      author: "Ananya Singh",
-      slug: "autumn-open-2024-report"
-    }
-  ],
-
-  matches: [
-    {
-      opponent: "Priya Sharma",
-      result: "W",
-      date: "2024-12-15",
-      fen: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
-    },
-    {
-      opponent: "Vikash Kumar", 
-      result: "L",
-      date: "2024-12-10",
-      fen: "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 3"
-    },
-    {
-      opponent: "Ananya Singh",
-      result: "D", 
-      date: "2024-12-05",
-      fen: "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 2"
-    }
-  ]
-};
-
 // Theme Management
 class ThemeManager {
   constructor() {
@@ -268,54 +176,6 @@ function setupSmoothScrolling() {
   });
 }
 
-// Render functions for dynamic content
-function renderLeaderboard() {
-  const overallTable = document.getElementById('overall-rankings');
-  const rapidTable = document.getElementById('rapid-rankings');
-  const blitzTable = document.getElementById('blitz-rankings');
-
-  if (overallTable) {
-    const tbody = overallTable.querySelector('tbody');
-    tbody.innerHTML = sampleData.players.map((player, index) => {
-      const deltaIcon = player.delta > 0 ? '▲' : player.delta < 0 ? '▼' : '=';
-      const deltaClass = player.delta > 0 ? 'badge-success' : player.delta < 0 ? 'badge-danger' : 'badge-neutral';
-      
-      return `
-        <tr>
-          <td>${index + 1}</td>
-          <td><span class="badge ${deltaClass} rank-delta">${deltaIcon}</span></td>
-          <td><a href="profile.html" class="match-opponent">${player.name}</a></td>
-          <td><strong>${player.rating}</strong></td>
-        </tr>
-      `;
-    }).join('');
-  }
-
-  if (rapidTable) {
-    const tbody = rapidTable.querySelector('tbody');
-    const rapidSorted = [...sampleData.players].sort((a, b) => b.rapid - a.rapid);
-    tbody.innerHTML = rapidSorted.slice(0, 5).map((player, index) => `
-      <tr>
-        <td>${index + 1}</td>
-        <td><a href="profile.html" class="match-opponent">${player.name}</a></td>
-        <td><strong>${player.rapid}</strong></td>
-      </tr>
-    `).join('');
-  }
-
-  if (blitzTable) {
-    const tbody = blitzTable.querySelector('tbody');
-    const blitzSorted = [...sampleData.players].sort((a, b) => b.blitz - a.blitz);
-    tbody.innerHTML = blitzSorted.slice(0, 5).map((player, index) => `
-      <tr>
-        <td>${index + 1}</td>
-        <td><a href="profile.html" class="match-opponent">${player.name}</a></td>
-        <td><strong>${player.blitz}</strong></td>
-      </tr>
-    `).join('');
-  }
-}
-
 function renderTournaments() {
   const upcomingContainer = document.getElementById('upcoming-tournaments');
   const pastContainer = document.getElementById('past-tournaments');
@@ -393,66 +253,76 @@ function renderNewsletters() {
   }
 }
 
-function renderProfile() {
-  const profileData = sampleData.players[0]; // Using first player as example
-  
-  // Render recent matches
-  const matchHistory = document.getElementById('match-history');
-  if (matchHistory) {
-    // Setup copy FEN buttons
-    document.querySelectorAll('.copy-fen').forEach(button => {
-      button.addEventListener('click', (e) => {
-        const fen = e.target.getAttribute('data-fen');
-        copyToClipboard(fen, e.target);
-      });
-    });
-  }
-
-  // Update ratings display
-  const rapidRating = document.getElementById('rapid-rating');
-  const blitzRating = document.getElementById('blitz-rating');
-  
-  if (rapidRating) rapidRating.textContent = profileData.rapid;
-  if (blitzRating) blitzRating.textContent = profileData.blitz;
-}
-
-function renderHomeHighlights() {
-
-  // Next tournament
-  const nextTournament = document.getElementById('next-tournament');
-  if (nextTournament) {
-    const upcoming = sampleData.tournaments.find(t => t.type === 'upcoming');
-    if (upcoming) {
-      nextTournament.innerHTML = `
-        <h4>${upcoming.name}</h4>
-        <p class="text-muted">${new Date(upcoming.date).toLocaleDateString('en-IN', {
-          weekday: 'long',
-          month: 'long',
-          day: 'numeric'
-        })}</p>
-        <div class="countdown mt-2" data-target="${upcoming.date}">Loading...</div>
-      `;
-      
-      // Initialize countdown
-      const countdownEl = nextTournament.querySelector('.countdown');
-      new CountdownTimer(countdownEl, upcoming.date);
-    }
-  }
-
-  // Latest newsletter
-  const latestNewsletter = document.getElementById('latest-newsletter');
-  if (latestNewsletter) {
-    const latest = sampleData.newsletters[0];
-    latestNewsletter.innerHTML = `
-      <h4>${latest.title}</h4>
-      <p class="text-muted">${new Date(latest.date).toLocaleDateString('en-IN')}</p>
-      <a href="newsletter-article.html?slug=${latest.slug}" class="btn btn-secondary btn-small mt-2">Read</a>
-    `;
-  }
-}
-
 // Initialize app
 document.addEventListener('DOMContentLoaded', function() {
+  const resultsContainer = document.getElementById("profile-results");
+  const searchInput = document.getElementById("profile-search");
+  const ratingFilter = document.getElementById("rating-filter");
+  const resultsCount = document.getElementById("results-count");
+
+  // async function loadProfiles() {
+  //   const search = searchInput.value.trim();
+  //   const rating = ratingFilter.value;
+
+  //   const params = new URLSearchParams({
+  //     search,
+  //     rating,
+  //   });
+
+  //   const response = await fetch(`/api/profiles/?${params.toString()}`);
+  //   const data = await response.json();
+
+  //   // Clear and render
+  //   resultsContainer.innerHTML = "";
+  //   data.profiles.forEach(profile => {
+  //     const card = document.createElement("div");
+  //     card.classList.add("profile-card");
+  //     card.innerHTML = `
+  //       <div class="profile-name">
+  //         <a href="${profile.profile_url}">${profile.name}</a>
+  //       </div>
+  //       <div class="profile-rating">Rating: ${profile.rating}</div>
+  //       <div class="profile-rank">Rank: ${profile.rank}</div>
+  //     `;
+  //     resultsContainer.appendChild(card);
+  //   });
+
+  //   resultsCount.textContent = `${data.profiles.length} members found`;
+  // }
+  async function loadProfiles() {
+    const container = document.getElementById("profile-results");
+    const searchEl = document.getElementById("profile-search");
+    const ratingEl = document.getElementById("rating-filter");
+
+    if (!container || !searchEl || !ratingEl) return; // ✅ exit if any not found
+
+    const search = searchEl.value.trim();
+    const rating = ratingEl.value;
+
+    const params = new URLSearchParams({ search, rating });
+    const response = await fetch(`/api/profiles/?${params.toString()}`);
+    const data = await response.json();
+
+    container.innerHTML = "";
+    data.profiles.forEach(profile => {
+      container.innerHTML += `
+        <div class="profile-card">
+          <div class="profile-name"><a href="${profile.profile_url}">${profile.name}</a></div>
+          <div class="profile-rating">Rating: ${profile.rating}</div>
+          <div class="profile-rank">Rank: ${profile.rank}</div>
+        </div>`;
+    });
+
+    const count = document.getElementById("results-count");
+    if (count) count.textContent = `${data.profiles.length} members found`;
+  }
+
+  loadProfiles();
+
+  if(searchInput && ratingFilter){
+    searchInput.addEventListener("input", () => loadProfiles());
+    ratingFilter.addEventListener("change", () => loadProfiles());
+  }
   // Initialize theme manager
   const themeManager = new ThemeManager();
   
@@ -466,21 +336,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
   
   switch(currentPage) {
-    case 'index.html':
-    case '':
-      renderHomeHighlights();
-      break;
-    case 'leaderboard.html':
-      renderLeaderboard();
-      break;
     case 'tournaments.html':
       renderTournaments();
       break;
     case 'newsletters.html':
       renderNewsletters();
-      break;
-    case 'profile.html':
-      renderProfile();
       break;
   }
   
