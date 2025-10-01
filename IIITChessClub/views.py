@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.shortcuts import render, redirect
+from django.utils.timezone import now
 import json
 from accounts.models import User, UserProfile
+from tournaments.models import Tournament
+from newsletters.models import Newsletter
 
 
 from dotenv import load_dotenv
@@ -11,8 +14,19 @@ if env_path.exists():
 
 
 def home(request):
+    next_tournament = (
+        Tournament.objects
+        .filter(start_date__gte=now().date())
+        .order_by('start_date')
+        .first()
+    )
+    latest_newsletter = (
+        Newsletter.objects
+        .order_by('-published_date')
+        .first()
+    )
     top_users = User.objects.select_related("profile").order_by("-profile__rating")[:5]
-    return render(request, 'home.html', {"top_users": top_users})
+    return render(request, 'home.html', {"top_users": top_users, "next_tournament": next_tournament, "latest_newsletter": latest_newsletter})
 
 def tournaments(request):
     return render(request, 'tournaments.html')
