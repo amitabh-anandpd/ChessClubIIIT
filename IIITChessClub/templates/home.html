@@ -65,21 +65,35 @@
           <a href="{% url 'leaderboard' %}" class="btn btn-secondary btn-small mt-4">View Full Rankings</a>
         </div>
         
-        <!-- Next Tournament Card -->
         <div class="card">
           <h3>📅 Next Tournament</h3>
-          <div id="next-tournament">
-            <!-- Rendered by JavaScript -->
-          </div>
+          {% if next_tournament %}
+            <h4>{{ next_tournament.name }}</h4>
+            <p class="text-muted">
+              {{ next_tournament.start_date|date:"F j, Y" }}
+              {% if next_tournament.is_active %}
+                <span class="badge badge-success">Ongoing</span>
+              {% else %}
+                <span class="badge badge-neutral">Upcoming</span>
+              {% endif %}
+            </p>
+            <p>{{ next_tournament.description|truncatewords:20 }}</p>
+          {% else %}
+            <p class="text-muted">No upcoming tournaments</p>
+          {% endif %}
           <a href="{% url 'tournaments' %}" class="btn btn-secondary btn-small mt-4">All Tournaments</a>
         </div>
         
-        <!-- Latest Newsletter Card -->
         <div class="card">
           <h3>📰 Latest Newsletter</h3>
-          <div id="latest-newsletter">
-            <!-- Rendered by JavaScript -->
-          </div>
+          {% if latest_newsletter %}
+            <h4>{{ latest_newsletter.title }}</h4>
+            <p class="text-muted">{{ latest_newsletter.published_date|date:"F j, Y" }} • {{ latest_newsletter.author }}</p>
+            <p>{{ latest_newsletter.excerpt|truncatewords:20 }}</p>
+            <a href="{% url 'newsletter_article' latest_newsletter.slug %}" class="btn btn-primary btn-small mt-4">Read</a>
+          {% else %}
+            <p class="text-muted">No newsletters yet</p>
+          {% endif %}
           <a href="{% url 'newsletters' %}" class="btn btn-secondary btn-small mt-4">All Newsletters</a>
         </div>
       </div>
@@ -90,18 +104,15 @@
       <div class="grid grid-2">
         <div class="card">
           <h3>About Our Club</h3>
-          <p>The IIIT Hyderabad Chess Club has been at the forefront of competitive chess education since 2010. We provide a platform for students to develop strategic thinking, participate in tournaments, and connect with fellow chess enthusiasts.</p>
-          <p>Our members regularly compete in inter-collegiate tournaments and have achieved remarkable success at state and national levels. We offer training sessions, organize regular tournaments, and maintain a vibrant community of chess players.</p>
         </div>
         
         <div class="card">
           <h3>Join Our Community</h3>
           <p>Whether you're a beginner looking to learn the fundamentals or an experienced player seeking competitive challenges, our club welcomes all skill levels.</p>
           <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-            <li style="margin-bottom: 0.5rem;">♟️ Weekly training sessions</li>
             <li style="margin-bottom: 0.5rem;">🏆 Monthly tournaments</li>
             <li style="margin-bottom: 0.5rem;">📚 Game analysis workshops</li>
-            <li style="margin-bottom: 0.5rem;">🤝 Friendly matches and study groups</li>
+            <li style="margin-bottom: 0.5rem;">🤝 Friendly and competitive matches</li>
           </ul>
           <a href="mailto:chessclub@students.iiit.ac.in" class="btn btn-primary btn-small mt-4">Contact Us</a>
         </div>
