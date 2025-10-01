@@ -13,11 +13,12 @@ class ThemeManager {
   applyTheme() {
     const html = document.documentElement;
     
-    if (this.theme === 'auto') {
-      html.removeAttribute('data-theme');
-    } else {
-      html.setAttribute('data-theme', this.theme);
-    }
+    // if (this.theme === 'auto') {
+    //   html.removeAttribute('data-theme');
+    // } else {
+    //   html.setAttribute('data-theme', this.theme);
+    // }
+    html.setAttribute('data-theme', this.theme);
     
     this.updateToggleIcon();
   }

@@ -253,10 +253,36 @@ p {
   color: var(--accent);
 }
 
-.nav-logo::before {
-  content: "♞";
+/* .nav-logo::before {
+  content: url("/static/images/chess-logo.png");
+  width: 24px;
+  height: 24px;
   font-size: 1.5rem;
   color: var(--accent);
+} */
+ .nav-logo::before {
+  content: "";
+  display: inline-block;
+  width: 75px;
+  height: 75px;
+  background-image: url("/static/images/chess-logo7.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+html[data-theme="dark"] .nav-logo::before {
+  background-image: url("/static/images/chess-logo6.png");
+}
+html[data-theme="auto"] .nav-logo::before {
+  background-image: url("/static/images/chess-logo7.png");
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme="auto"] .nav-logo::before {
+    background-image: url("/static/images/chess-logo6.png");
+  }
 }
 
 .nav-links {
