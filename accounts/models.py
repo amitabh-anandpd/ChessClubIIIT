@@ -20,7 +20,16 @@ class User(AbstractUser):
     
     @property
     def initials(self):
-        return str(self.first_name[0]+self.last_name[0])
+        a = ""
+        b = ""
+        if self.first_name:
+            a = self.first_name[0]
+        if self.last_name:
+            b = self.last_name[0]
+        c = a+b
+        if c=="":
+            c = "NA"
+        return str(c)
     
     @property
     def tournaments(self):
