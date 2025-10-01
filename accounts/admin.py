@@ -9,5 +9,5 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'rating',)
+    list_display = ('user', 'rating', 'rank',)
     search_fields = ('user', 'rank',)

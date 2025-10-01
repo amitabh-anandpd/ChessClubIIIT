@@ -48,6 +48,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     rating = models.IntegerField(default=600)
     last_rating = models.IntegerField(default=600)
+    rank = models.IntegerField(default=0)
     last_rank = models.IntegerField(default=0)
     chessdotcom = models.CharField(max_length=64, blank=True, null=True)
     lichess = models.CharField(max_length=64, blank=True, null=True)
@@ -61,6 +62,7 @@ class UserProfile(models.Model):
             "user_id": self.user.id,
             "rating": self.rating,
             "last_rating": self.last_rating,
+            "rank": self.rank,
             "last_rank": self.last_rank,
             "chessdotcom": self.chessdotcom,
             "lichess": self.lichess,
