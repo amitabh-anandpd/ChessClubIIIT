@@ -15,7 +15,7 @@
         <a href="{% url 'home' %}" class="nav-logo">
           IIIT Hyderabad Chess Club
         </a>
-        
+
         <ul class="nav-links">
           <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
           <li><a href="{% url 'leaderboard' %}" class="nav-link">Leaderboard</a></li>
@@ -23,7 +23,7 @@
           <li><a href="{% url 'newsletters' %}" class="nav-link">Newsletters</a></li>
           <li><a href="{% url 'profile' %}" class="nav-link active">Profile</a></li>
         </ul>
-        
+
         <div class="nav-controls">
           <button class="theme-toggle" aria-label="Toggle theme">🔄</button>
         </div>
@@ -39,11 +39,11 @@
         <div class="profile-info">
           <h2>{{ user.first_name }} {{ user.last_name }}</h2>
           <div class="profile-meta">
-            {% if user.chessdotcom %}
-            <a href="https://chess.com/member/{{ user.chessdotcom }}" target="_blank" class="text-accent">Chess.com</a>
+            {% if user.profile.chessdotcom %}
+            <a href="https://chess.com/member/{{ user.profile.chessdotcom }}" target="_blank" class="text-accent">Chess.com</a>
             {% endif %}
-            {% if user.lichess %} 
-            <a href="https://lichess.org/@/{{ user.lichess }}" target="_blank" class="text-accent">Lichess</a>
+            {% if user.profile.lichess %}
+            <a href="https://lichess.org/@/{{ user.profile.lichess }}" target="_blank" class="text-accent">Lichess</a>
             {% endif %}
           </div>
         </div>
@@ -71,7 +71,7 @@
           <span class="rating-label">Club Rank</span>
         </div-->
       </div>
-      
+
       <!-- Placeholder for rating history charts >
       <div class="mt-4">
         <h4>Rating Progress</h4>
@@ -84,7 +84,7 @@
           </div>
           <div class="card" style="flex: 1; padding: 2rem; text-align: center; color: var(--text-secondary);">
             <canvas width="200" height="100" style="border: 1px dashed var(--border); border-radius: 4px;">
-              Blitz Rating History  
+              Blitz Rating History
             </canvas>
             <div class="mt-2">Blitz History</div>
           </div>
@@ -180,30 +180,30 @@
     </div>
 
     <!-- Statistics -->
-    {% comment %} <div class="card mt-6">
-      <h3>Performance Statistics</h3>
-      <div class="grid grid-3">
-        <div class="text-center">
-          <div style="font-size: 2rem; font-weight: bold; color: var(--accent);">47</div>
-          <div class="text-muted">Total Games</div>
-        </div>
-        <div class="text-center">
-          <div style="font-size: 2rem; font-weight: bold; color: var(--success);">68%</div>
-          <div class="text-muted">Win Rate</div>
-        </div>
-        <div class="text-center">
-          <div style="font-size: 2rem; font-weight: bold; color: var(--accent);">5</div>
-          <div class="text-muted">Tournaments Won</div>
-        </div>
-      </div>
-    </div> {% endcomment %}
+    <!--<div class="card mt-6">-->
+    <!--  <h3>Performance Statistics</h3>-->
+    <!--  <div class="grid grid-3">-->
+    <!--    <div class="text-center">-->
+    <!--      <div style="font-size: 2rem; font-weight: bold; color: var(--accent);">47</div>-->
+    <!--      <div class="text-muted">Total Games</div>-->
+    <!--    </div>-->
+    <!--    <div class="text-center">-->
+    <!--      <div style="font-size: 2rem; font-weight: bold; color: var(--success);">68%</div>-->
+    <!--      <div class="text-muted">Win Rate</div>-->
+    <!--    </div>-->
+    <!--    <div class="text-center">-->
+    <!--      <div style="font-size: 2rem; font-weight: bold; color: var(--accent);">5</div>-->
+    <!--      <div class="text-muted">Tournaments Won</div>-->
+    <!--    </div>-->
+    <!--  </div>-->
+    <!--</div>-->
 
     <!-- Future Integration Note -->
     <div class="card mt-6" style="border: 1px dashed var(--border); background: var(--muted);">
       <h4>🔧 Profile Enhancement Coming Soon</h4>
       <p class="text-muted">
         We're working on integrating live data from Chess.com and Lichess APIs to show:
-        real-time ratings, recent games with full analysis, opening repertoire statistics, 
+        real-time ratings, recent games with full analysis, opening repertoire statistics,
         and detailed performance metrics. Authentication and profile editing features will be added soon.
       </p>
     </div>
