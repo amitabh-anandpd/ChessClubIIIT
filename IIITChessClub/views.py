@@ -29,7 +29,11 @@ def home(request):
     return render(request, 'home.html', {"top_users": top_users, "next_tournament": next_tournament, "latest_newsletter": latest_newsletter})
 
 def tournaments(request):
-    return render(request, 'tournaments.html')
+    upcoming_tournaments = Tournament.objects.filter(
+        is_active=True,
+        start_date__gte=now().date()
+    ).order_by('start_date')
+    return render(request, 'tournaments.html', {"upcoming_tournaments": upcoming_tournaments})
 
 def newsletters(request):
     return render(request, 'newsletters.html')
