@@ -750,8 +750,24 @@ html[data-theme="auto"] .nav-logo::before {
 }
 
 /* Tournament Cards */
-.tournament-card {
+/* .tournament-card {
   border-left: 4px solid var(--accent);
+} */
+.tournament-card {
+  padding: 1.5rem;
+  border: 1px solid var(--muted);
+  border-radius: 12px;
+  background: var(--background);
+  transition: transform 0.2s ease;
+}
+.tournament-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.tournament-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
 .tournament-header {
