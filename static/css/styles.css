@@ -586,12 +586,16 @@ html[data-theme="auto"] .nav-logo::before {
 }
 
 /* Profile Specific */
-.profile-grid {
+/* .profile-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
+} */
+.profile-grid {
+  display: flex;
+  flex-direction: column; /* stacked vertically */
+  gap: 0.8rem;
 }
-
 .profile-card {
   background-color: #0d1117;
   border: 1px solid #30363d;

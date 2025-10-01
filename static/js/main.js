@@ -260,6 +260,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById("profile-search");
   const ratingFilter = document.getElementById("rating-filter");
   const resultsCount = document.getElementById("results-count");
+  document.getElementById("profile-results").innerHTML = "";
+  document.getElementById("results-count").textContent = "Start typing to search...";
 
   // async function loadProfiles() {
   //   const search = searchInput.value.trim();
@@ -295,10 +297,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchEl = document.getElementById("profile-search");
     const ratingEl = document.getElementById("rating-filter");
 
-    if (!container || !searchEl || !ratingEl) return; // ✅ exit if any not found
+    if (!container || !searchEl || !ratingEl) return;
 
     const search = searchEl.value.trim();
     const rating = ratingEl.value;
+    const counter = document.getElementById("results-count");
+
+    if (search === "") {
+      container.innerHTML = "";
+      if (counter) counter.textContent = "Start typing to search...";
+      return;
+    }
 
     const params = new URLSearchParams({ search, rating });
     const response = await fetch(`/api/profiles/?${params.toString()}`);
@@ -314,8 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>`;
     });
 
-    const count = document.getElementById("results-count");
-    if (count) count.textContent = `${data.profiles.length} members found`;
+    if (counter) counter.textContent = `${data.profiles.length} members found`;
   }
 
   loadProfiles();
