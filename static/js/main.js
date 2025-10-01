@@ -260,8 +260,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const searchInput = document.getElementById("profile-search");
   const ratingFilter = document.getElementById("rating-filter");
   const resultsCount = document.getElementById("results-count");
-  document.getElementById("profile-results").innerHTML = "";
-  document.getElementById("results-count").textContent = "Start typing to search...";
 
   // async function loadProfiles() {
   //   const search = searchInput.value.trim();
