@@ -82,6 +82,32 @@ input, button, textarea, select {
 p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
+.leaderboard a {
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease-in-out;
+}
+html[data-theme="light"] .leaderboard a {
+  color: black; 
+}
+html[data-theme="light"] .leaderboard a:hover,
+html[data-theme="dark"] .leaderboard a:hover,
+html[data-theme="auto"] .leaderboard a:hover {
+  color: var(--accent);
+}
+html[data-theme="dark"] .leaderboard a {
+  color: whitesmoke;
+}
+html[data-theme="light"] .leaderboard a:visited,
+html[data-theme="dark"] .leaderboard a:visited,
+html[data-theme="auto"] .leaderboard a:visited {
+  color: var(--accent-hover);
+}
+@media (prefers-color-scheme: dark) {
+  html[data-theme="auto"] .leaderboard a {
+    color: whitesmoke;
+  }
+}
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
