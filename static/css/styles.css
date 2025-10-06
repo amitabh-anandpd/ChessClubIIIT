@@ -516,7 +516,11 @@ html[data-theme="auto"] .nav-logo::before {
 }
 
 [data-theme="dark"] .table tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.02);
+  background:
+    linear-gradient(90deg, var(--accent), transparent),
+    rgba(255, 255, 255, 0.02);
+    background-size: 4px 100%, 100% 100%;
+    background-repeat: no-repeat;
 }
 
 /* Special highlighting for top 3 */
