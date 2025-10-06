@@ -1,6 +1,14 @@
+lucide.createIcons();
+
 // Theme Management
 class ThemeManager {
   constructor() {
+    this.themes = ['light', 'dark', 'auto'];
+    this.icons = {
+      light: 'sun',
+      dark: 'moon',
+      auto: 'sun-moon'
+    };
     this.theme = localStorage.getItem('chess-club-theme') || 'auto';
     this.init();
   }
@@ -24,26 +32,25 @@ class ThemeManager {
   }
 
   toggleTheme() {
-    const themes = ['light', 'dark', 'auto'];
+    const themes = this.themes
     const currentIndex = themes.indexOf(this.theme);
     this.theme = themes[(currentIndex + 1) % themes.length];
     
     localStorage.setItem('chess-club-theme', this.theme);
     this.applyTheme();
+    lucide.createIcons();
   }
 
   updateToggleIcon() {
     const toggle = document.querySelector('.theme-toggle');
     if (!toggle) return;
 
-    const icons = {
-      light: '☀️',
-      dark: '🌙', 
-      auto: '🔄'
-    };
+    const icons = this.icons
     
-    toggle.innerHTML = icons[this.theme] || icons.auto;
+    const iconName = this.icons[this.theme] || this.icons.auto;
+    toggle.innerHTML = `<i data-lucide="${iconName}"></i>`;
     toggle.setAttribute('aria-label', `Current theme: ${this.theme}. Click to change.`);
+    lucide.createIcons();
   }
 
   setupToggle() {
@@ -51,6 +58,7 @@ class ThemeManager {
     if (toggle) {
       toggle.addEventListener('click', () => this.toggleTheme());
     }
+    lucide.createIcons();
   }
 }
 
@@ -140,20 +148,6 @@ function showCopyFeedback(button, message) {
     button.textContent = originalText;
     button.disabled = false;
   }, 2000);
-}
-
-// Navigation active state
-function setActiveNavigation() {
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  const navLinks = document.querySelectorAll('.nav-link');
-  
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    const href = link.getAttribute('href');
-    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-      link.classList.add('active');
-    }
-  });
 }
 
 // Smooth scrolling for anchor links
@@ -332,10 +326,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   // Initialize theme manager
   const themeManager = new ThemeManager();
-  
-  // Set active navigation
-  setActiveNavigation();
-  
   // Setup smooth scrolling
   setupSmoothScrolling();
   
