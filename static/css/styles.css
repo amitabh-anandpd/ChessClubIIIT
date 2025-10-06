@@ -167,7 +167,7 @@ html[data-theme="auto"] .leaderboard a:visited {
 .stat-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #58a6ff;
+  color: var(--accent);
 }
 
 .stat-label {
@@ -342,6 +342,7 @@ html[data-theme="auto"] .nav-logo::before {
   height: 2px;
   background: var(--accent);
   border-radius: 1px;
+  text-decoration: underline;
 }
 
 .nav-controls {
@@ -597,18 +598,18 @@ html[data-theme="auto"] .nav-logo::before {
   flex: 1;
   padding: 0.75rem 1rem;
   min-width: 250px;
-  background-color: #0d1117;
+  background-color: var(--surface);
   border: 1px solid #30363d;
   border-radius: 8px;
-  color: #e6edf3;
+  color: var(--text);
 }
 
 .filter-select {
   padding: 0.6rem 0.9rem;
   border-radius: 8px;
-  background-color: #0d1117;
+  background-color: var(--surface);
   border: 1px solid #30363d;
-  color: #e6edf3;
+  color: var(--text);
 }
 
 /* Profile Specific */
@@ -623,7 +624,7 @@ html[data-theme="auto"] .nav-logo::before {
   gap: 0.8rem;
 }
 .profile-card {
-  background-color: #0d1117;
+  background-color: var(--surface);
   border: 1px solid #30363d;
   border-radius: 10px;
   padding: 1rem 1.2rem;
@@ -636,16 +637,20 @@ html[data-theme="auto"] .nav-logo::before {
 }
 
 .profile-name a {
-  color: #58a6ff;
+  color: var(--text);
   text-decoration: none;
   font-weight: 600;
+}
+.profile-name a:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 .profile-rating,
 .profile-rank {
   margin-top: 0.4rem;
   font-size: 0.95rem;
-  color: #c9d1d9;
+  color: var(--text-secondary);
 }
 
 .profile-header {
