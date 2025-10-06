@@ -82,7 +82,11 @@
                     <span class="badge badge-neutral">{{ entry.current_rank }} =</span>
                   {% endif %}
                 </td>
-                <td>{{ entry.user.first_name }} {{ entry.user.last_name }}</td>
+                <td>
+                  <a href="{% url 'user_profile' entry.user.username %}">
+                    {{ entry.user.first_name }} {{ entry.user.last_name }}
+                  </a>
+                </td>
                 <td>
                   {{ entry.user.profile.rating }}
                   {% with entry.rating_change as change %}
