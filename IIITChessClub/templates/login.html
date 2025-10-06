@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - IIIT Hyderabad Chess Club</title>
+  <meta name="description" content="Login to access your IIIT Hyderabad Chess Club account using CAS authentication.">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content">
+        <a href="{% url 'home' %}" class="nav-logo">
+          IIIT Hyderabad Chess Club
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+          <li><a href="{% url 'leaderboard' %}" class="nav-link active">Leaderboard</a></li>
+          <li><a href="{% url 'tournaments' %}" class="nav-link">Tournaments</a></li>
+          <li><a href="{% url 'newsletters' %}" class="nav-link">Newsletters</a></li>
+          <li><a href="{% url 'profile' %}" class="nav-link">Profile</a></li>
+        </ul>
+        
+        <div class="nav-controls">
+          <button class="theme-toggle" aria-label="Toggle theme">🔄</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="margin-top: 4rem;">
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <div class="login-icon">♞</div>
+          <h1>Welcome Back</h1>
+          <p class="text-muted">Sign in to access your chess club account</p>
+        </div>
+
+        <div class="login-content">
+          <div class="login-info">
+            <h3>IIIT Hyderabad Students & Faculty</h3>
+            <p>Use your institutional credentials to access:</p>
+            <ul class="login-features">
+              <li>✓ Personal chess profile and statistics</li>
+              <li>✓ Tournament registration and results</li>
+              <li>✓ Match history and game analysis</li>
+              <li>✓ Club rankings and leaderboards</li>
+              <li>✓ Newsletter subscriptions and updates</li>
+            </ul>
+          </div>
+
+          <div class="login-action">
+            <a href="https://login.iiit.ac.in" 
+               class="btn btn-primary btn-large">
+              <span class="login-btn-icon">🔐</span>
+              Login with CAS
+            </a>
+            <p class="login-help">
+              Secure authentication through IIIT Hyderabad's Central Authentication Service
+            </p>
+          </div>
+        </div>
+
+        <div class="login-footer">
+          <div class="login-security">
+            <h4>🛡️ Secure & Private</h4>
+            <p>Your login is handled securely by IIIT Hyderabad's authentication system. We don't store your password and only access basic profile information needed for club membership.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Information -->
+      <div class="login-additional">
+        <div class="card">
+          <h3>New to the Chess Club?</h3>
+          <p>All IIIT Hyderabad students and faculty are welcome to join our chess community. After logging in, you can:</p>
+          <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+            <li>Complete your chess profile with ratings from Chess.com and Lichess</li>
+            <li>Register for upcoming tournaments and events</li>
+            <li>Connect with other chess enthusiasts on campus</li>
+            <li>Access training resources and game analysis tools</li>
+          </ul>
+          <div class="mt-4">
+            <a href="mailto:chess@iiit.ac.in" class="btn btn-secondary btn-small">Contact Club Coordinators</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Having Trouble?</h3>
+          <p>If you're experiencing issues with CAS login:</p>
+          <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+            <li>Ensure you're using your IIIT Hyderabad credentials</li>
+            <li>Clear your browser cache and cookies</li>
+            <li>Try using a different browser or incognito mode</li>
+            <li>Contact IT support for account-related issues</li>
+          </ul>
+          <div class="mt-4">
+            <a href="mailto:support@iiit.ac.in" class="btn btn-secondary btn-small">IT Support</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="mailto:chessclub@students.iiit.ac.in">chessclub@students.iiit.ac.in</a>
+          <a href="#">Chess.com Team</a>
+          <a href="#">Lichess Team</a>
+          <a href="https://www.instagram.com/chessclub.iiith">Instagram</a>
+        </div>
+        <div class="footer-info">
+          <p>&copy; 2025 IIIT Hyderabad Chess Club. Part of the International Institute of Information Technology, Hyderabad.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
