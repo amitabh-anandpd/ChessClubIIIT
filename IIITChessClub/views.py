@@ -35,5 +35,7 @@ def tournaments(request):
     ).order_by('start_date')
     return render(request, 'tournaments.html', {"upcoming_tournaments": upcoming_tournaments})
 
-def newsletters(request):
-    return render(request, 'newsletters.html')
+def login(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+    return render(request, 'login.html')
