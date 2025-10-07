@@ -8,6 +8,7 @@
   <meta name="description" content="Search and discover chess player profiles in the IIIT Hyderabad Chess Club community.">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.344.0/lucide.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/hero-profile.css' %}">
 </head>
 <body>
   <nav class="navbar">
@@ -37,7 +38,63 @@
       <h1>Player Profiles</h1>
       <p class="text-muted">Search and discover members of our chess community</p>
     </div>
+    {% comment %} {% if curr_user %}
+        <div class="my-profile-card mb-6">
+          <h3 class="my-profile-title">👤 My Profile</h3>
+          <div class="my-profile-content">
+            <div class="profile-avatar">
+              {{ curr_user.initials }}
+            </div>
+            <div class="profile-info">
+              <h4 class="profile-name">
+                <a href="{% url 'user_profile' curr_user.username %}">
+                  {{ curr_user.first_name }} {{ curr_user.last_name }}
+                </a>
+              </h4>
+              <div class="profile-meta">
+                <span>⭐ Rating: <strong>{{ curr_user.profile.rating }}</strong></span><br>
+                <span>🏅 Rank: <strong>#{{ curr_user.profile.rank }}</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endif %} {% endcomment %}
+    {% if curr_user %}
+        <section class="my-profile-hero mb-6">  <!-- added mb-6 for spacing -->
+          <div class="hero-header">
+            <i data-lucide="user" class="hero-icon"></i>
+            <h3 class="hero-title">My Profile</h3>
+          </div>
 
+          <div class="hero-body">
+            <div class="hero-avatar">
+              {{ curr_user.initials }}
+            </div>
+            <div class="hero-info">
+              <div class="hero-name">
+                <a href="{% url 'user_profile' curr_user.username %}">
+                  {{ curr_user.first_name }} {{ curr_user.last_name }}
+                </a>
+              </div>
+
+              <div class="hero-meta">
+                <div class="hero-stat">
+                  <i data-lucide="star" class="hero-stat-icon"></i> <span class="hero-label">Rating:</span>
+                  <span class="hero-value">{{ curr_user.profile.rating }}</span>
+                </div>
+                <div class="hero-stat">
+                  <i data-lucide="medal" class="hero-stat-icon"></i> <span class="hero-label">Rank:</span>
+                  <span class="hero-value">#{{ curr_user.profile.rank }}</span>
+                </div>
+              </div>
+
+              <a href="{% url 'user_profile' curr_user.username %}" class="hero-button">
+                View Full Profile
+              </a>
+            </div>
+          </div>
+        </section>
+    {% endif %}
     <!-- Search Section -->
     <div class="card mb-6">
       <h3>Search Players</h3>
@@ -65,7 +122,7 @@
     <!-- Search Results -->
     <div class="card mb-6">
       <div class="flex items-center justify-between mb-4">
-        <h3>Club Members</h3>
+        <h3>Members</h3>
         <div class="text-muted" id="results-count">Loading...</div>
       </div>
       <div id="profile-results" class="profile-grid">
