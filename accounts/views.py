@@ -54,7 +54,16 @@ def profile(request):
     active_count = len(users)
     avg_rating = int(UserProfile.objects.aggregate(avg=Avg('rating'))['avg'])
     match_count = len(Match.objects.all())
-    return render(request, 'profile.html', {"active_count": active_count, "avg_rating": avg_rating, "match_count": match_count})
+    curr_user = None
+    if request.user.is_authenticated:
+        curr_user = request.user
+    return render(request, 'profile.html',
+                  {
+                      "active_count": active_count,
+                      "avg_rating": avg_rating,
+                      "match_count": match_count,
+                      "curr_user": curr_user,
+                      })
 
 @require_GET
 def api_profiles(request):
