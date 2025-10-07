@@ -250,6 +250,7 @@ function renderNewsletters() {
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', function() {
+  lucide.createIcons();
   const resultsContainer = document.getElementById("profile-results");
   const searchInput = document.getElementById("profile-search");
   const ratingFilter = document.getElementById("rating-filter");
