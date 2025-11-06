@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from .views import home, tournaments, login
+from .views import home, tournaments, login, match
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +28,6 @@ urlpatterns = [
     path('newsletters/', include('newsletters.urls')),
     path('tournaments/', tournaments, name='tournaments'),
     path('login/', login, name='login'),
+    path('match/', match, name='match'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 #handler404 = 'IIITChessClub.views.custom_404_view'

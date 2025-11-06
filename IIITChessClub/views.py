@@ -39,3 +39,6 @@ def login(request):
     if request.user.is_authenticated:
         return redirect('/')
     return render(request, 'login.html')
+
+def match(request):
+    return render(request, 'match.html')
