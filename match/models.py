@@ -40,7 +40,7 @@ class Match(models.Model):
     end_time = models.DateTimeField(null=True, blank=True)
     result = models.CharField(max_length=10, choices=RESULT_CHOICES, default='*')
     
-    # Connection tracking
+    
     white_connected = models.BooleanField(default=False)
     black_connected = models.BooleanField(default=False)
     
@@ -50,7 +50,6 @@ class Match(models.Model):
         return f"{white_name} vs {black_name}"
     
     def add_move(self, move_san, move_from, move_to, fen):
-        """Add a move to the history"""
         move_data = {
             'san': move_san,
             'from': move_from,
@@ -64,13 +63,11 @@ class Match(models.Model):
         self.save()
     
     def get_current_turn(self):
-        """Returns 'white' or 'black' based on FEN"""
-        # FEN format: ... w/b ...
+        
         parts = self.current_fen.split()
         return 'white' if parts[1] == 'w' else 'black'
     
     def can_join(self, user):
-        """Check if a user can join this match"""
         if self.status != 'WAIT':
             return False
         if not self.player_white or not self.player_black:
@@ -78,17 +75,15 @@ class Match(models.Model):
         return False
     
     def join_as_player(self, user):
-        """Add user as a player"""
         if not self.player_white:
             self.player_white = user
         elif not self.player_black:
             self.player_black = user
-            self.status = 'LIVE'  # Start game when both players joined
+            self.status = 'LIVE'  
         self.save()
         return self.get_player_color(user)
     
     def get_player_color(self, user):
-        """Get the color assigned to a user"""
         if self.player_white == user:
             return 'white'
         elif self.player_black == user:

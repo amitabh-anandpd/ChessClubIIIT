@@ -7,7 +7,6 @@ from .models import Match
 import json
 
 def match_view(request, match_id):
-    """Render match page"""
     match = get_object_or_404(Match, id=match_id)
     
     
@@ -31,7 +30,6 @@ def match_view(request, match_id):
     return render(request, 'match.html', context)
 
 def lobby_view(request):
-    """Display match lobby with available matches"""
     
     waiting_matches = Match.objects.filter(status='WAIT').order_by('-start_time')
     live_matches = Match.objects.filter(status='LIVE').order_by('-start_time')[:10]
@@ -48,7 +46,6 @@ def lobby_view(request):
 @login_required
 @require_http_methods(["POST"])
 def create_match(request):
-    """Create a new match"""
     try:
         
         match = Match.objects.create(
@@ -72,7 +69,6 @@ def create_match(request):
 @login_required
 @require_http_methods(["POST"])
 def join_match(request, match_id):
-    """Join an existing match"""
     try:
         match = get_object_or_404(Match, id=match_id)
         
@@ -127,7 +123,6 @@ def join_match(request, match_id):
 
 @require_http_methods(["GET"])
 def match_state(request, match_id):
-    """Get current match state (for AJAX requests)"""
     try:
         match = get_object_or_404(Match, id=match_id)
         
@@ -155,7 +150,6 @@ def match_state(request, match_id):
 @login_required
 @require_http_methods(["POST"])
 def leave_match(request, match_id):
-    """Leave a match (resign if game is live)"""
     try:
         match = get_object_or_404(Match, id=match_id)
         
@@ -193,7 +187,6 @@ def leave_match(request, match_id):
 
 @require_http_methods(["GET"])
 def lobby_data(request):
-    """Get lobby data for AJAX updates"""
     try:
         waiting_matches = Match.objects.filter(status='WAIT').values(
             'id', 'player_white__username', 'start_time'
