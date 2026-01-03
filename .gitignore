@@ -1,0 +1,12 @@
+build.ps1
+db.sqlite3
+__pycache__
+IIITChessClub/__pycache__
+leaderboard/__pycache__
+match/__pycache__
+match/migrations
+newsletters/__pycache__
+newsletters/migrations
+tournaments/__pycache__
+tournaments/migrations
+.env

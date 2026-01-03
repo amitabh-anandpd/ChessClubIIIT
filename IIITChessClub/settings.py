@@ -27,7 +27,7 @@ if env_path.exists():
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("DJANGO_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.pythonanywhere.com', '127.0.0.1', 'localhost']
 
@@ -39,12 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne',
     'django.contrib.staticfiles',
+    'channels',
     'corsheaders',
     'accounts',
     'leaderboard',
     'newsletters',
     'tournaments',
+    'match',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -67,6 +70,8 @@ CORS_ALLOWED_ORIGINS = [
 
 ROOT_URLCONF = 'IIITChessClub.urls'
 
+ASGI_APPLICATION = 'IIITChessClub.asgi.application'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -85,7 +90,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'IIITChessClub.wsgi.application'
 
-
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -141,3 +153,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+WEBSOCKET_ACCEPT_ALL = True  # For development
+
+CORS_ALLOW_ALL_ORIGINS = True  # For development only
+SECURE_WEBSOCKET_ORIGIN_ALLOWED_HOSTS = ['localhost', '127.0.0.1']

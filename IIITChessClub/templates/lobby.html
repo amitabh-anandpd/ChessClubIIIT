@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Match Lobby - IIIT Hyderabad Chess Club</title>
+  <meta name="description" content="Join or create chess matches with IIIT Hyderabad Chess Club members.">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/match.css' %}">
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <style>
+    .lobby-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .match-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+    
+    .match-card:hover {
+      box-shadow: 0 4px 12px var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+    
+    .match-info {
+      flex: 1;
+    }
+    
+    .match-players {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    
+    .match-status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .match-status.waiting {
+      background: #fff3cd;
+      color: #856404;
+    }
+    
+    .match-status.live {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .match-status.ended {
+      background: #e2e3e5;
+      color: #383d41;
+    }
+    
+    .match-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-secondary);
+    }
+    
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    
+    .create-match-section {
+      text-align: center;
+      padding: 2rem;
+      background: var(--muted);
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    
+    .section-divider {
+      margin: 2rem 0;
+      border-top: 2px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content">
+        <a href="{% url 'home' %}" class="nav-logo">
+          IIIT Hyderabad Chess Club
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+          <li><a href="{% url 'leaderboard' %}" class="nav-link">Leaderboard</a></li>
+          <li><a href="{% url 'tournaments' %}" class="nav-link">Tournaments</a></li>
+          <li><a href="{% url 'newsletters' %}" class="nav-link">Newsletters</a></li>
+          <li><a href="{% url 'profile' %}" class="nav-link">Profile</a></li>
+          
+        </ul>
+        
+        <div class="nav-controls">
+          <button class="theme-toggle" aria-label="Toggle theme">🔄</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="lobby-container">
+    <div class="text-center mb-6">
+      <h1>Match Lobby</h1>
+      <p class="text-muted">Create a new match or join an existing one</p>
+    </div>
+
+    <!-- Create Match Section -->
+    <div class="create-match-section">
+      <h2>Start a New Match</h2>
+      <p class="text-muted mb-4">Create a match and wait for an opponent to join</p>
+      {% if user.is_authenticated %}
+        <button id="create-match-btn" class="btn btn-primary btn-large">Create Match</button>
+      {% else %}
+        <p class="text-muted">Please <a href="{% url 'login' %}">login</a> to create a match</p>
+      {% endif %}
+    </div>
+
+    <!-- Waiting for Opponent -->
+    <div class="card mb-4">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>Waiting for Opponent</h3>
+        <button id="refresh-lobby-btn" class="btn btn-secondary btn-small">Refresh</button>
+      </div>
+      
+      <div id="waiting-matches-container">
+        {% if waiting_matches %}
+          {% for match in waiting_matches %}
+            <div class="match-card">
+              <div class="match-info">
+                <div class="match-players">
+                  {{ match.player_white.username }} waiting for opponent...
+                </div>
+                <span class="match-status waiting">Waiting</span>
+                <span class="text-muted" style="margin-left: 1rem; font-size: 0.875rem;">
+                  Created {{ match.start_time|timesince }} ago
+                </span>
+              </div>
+              <div class="match-actions">
+                {% if user.is_authenticated and user != match.player_white %}
+                  <button class="btn btn-primary join-match-btn" data-match-id="{{ match.id }}">
+                    Join Match
+                  </button>
+                {% endif %}
+                <a href="{% url 'match_view' match.id %}" class="btn btn-secondary">View</a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-state-icon">♟️</div>
+            <p>No matches waiting for opponents</p>
+            <p class="text-muted">Create a match to get started!</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Live Matches -->
+    <div class="card mb-4">
+      <h3>Live Matches</h3>
+      
+      <div id="live-matches-container">
+        {% if live_matches %}
+          {% for match in live_matches %}
+            <div class="match-card">
+              <div class="match-info">
+                <div class="match-players">
+                  {{ match.player_white.username }} vs {{ match.player_black.username }}
+                </div>
+                <span class="match-status live">Live</span>
+                <span class="text-muted" style="margin-left: 1rem; font-size: 0.875rem;">
+                  Started {{ match.start_time|timesince }} ago
+                </span>
+              </div>
+              <div class="match-actions">
+                <a href="{% url 'match_view' match.id %}" class="btn btn-secondary">Watch</a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-state-icon">🎮</div>
+            <p>No live matches at the moment</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Recent Matches -->
+    <div class="card">
+      <h3>Recently Completed</h3>
+      
+      <div id="recent-matches-container">
+        {% if recent_matches %}
+          {% for match in recent_matches %}
+            <div class="match-card">
+              <div class="match-info">
+                <div class="match-players">
+                  {{ match.player_white.username }} vs {{ match.player_black.username }}
+                </div>
+                <span class="match-status ended">{{ match.result }}</span>
+                <span class="text-muted" style="margin-left: 1rem; font-size: 0.875rem;">
+                  Ended {{ match.end_time|timesince }} ago
+                </span>
+              </div>
+              <div class="match-actions">
+                <a href="{% url 'match_view' match.id %}" class="btn btn-secondary">Review</a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <p>No completed matches yet</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="mailto:chess@iiit.ac.in">chess@iiit.ac.in</a>
+          <a href="#">Chess.com Team</a>
+          <a href="#">Lichess Team</a>
+          <a href="#">Instagram</a>
+        </div>
+        <div class="footer-info">
+          <p>&copy; 2025 IIIT Hyderabad Chess Club. Part of the International Institute of Information Technology, Hyderabad.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script type="module" src="{% static 'js/main.js' %}"></script>
+  <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    document.getElementById('create-match-btn')?.addEventListener('click', async () => {
+      try {
+        const response = await fetch('{% url "create_match" %}', {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          window.location.href = data.redirect_url;
+        } else {
+          alert('Failed to create match: ' + data.error);
+        }
+      } catch (error) {
+        console.error('Error creating match:', error);
+        alert('Failed to create match');
+      }
+    });
+
+    document.querySelectorAll('.join-match-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const matchId = e.target.dataset.matchId;
+        
+        try {
+          const response = await fetch(`/match/api/${matchId}/join/`, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': getCookie('csrftoken'),
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            window.location.href = data.redirect_url;
+          } else {
+            alert('Failed to join match: ' + data.error);
+          }
+        } catch (error) {
+          console.error('Error joining match:', error);
+          alert('Failed to join match');
+        }
+      });
+    });
+
+    document.getElementById('refresh-lobby-btn')?.addEventListener('click', () => {
+      window.location.reload();
+    });
+
+    setInterval(() => {
+      updateLobbyData();
+    }, 10000);
+
+    async function updateLobbyData() {
+      try {
+        const response = await fetch('{% url "lobby_data" %}');
+        const data = await response.json();
+        
+        if (data.success) {
+          console.log('Lobby updated:', data);
+        }
+      } catch (error) {
+        console.error('Error updating lobby:', error);
+      }
+    }
+  </script>
+</body>
+</html>
