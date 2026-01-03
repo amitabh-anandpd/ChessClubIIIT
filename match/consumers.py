@@ -4,6 +4,7 @@ from channels.db import database_sync_to_async
 from django.contrib.auth.models import User
 from .models import Match
 import chess
+from django.db import transaction
 
 @database_sync_to_async
 def get_match_state(match_id):
@@ -38,11 +39,13 @@ class MatchConsumer(AsyncWebsocketConsumer):
             return
         
         
-        self.player_color = await self.assign_player()
-        
-        if not self.player_color:
-            
+        if not self.user or not self.user.is_authenticated:
             self.player_color = 'spectator'
+        else:
+            self.player_color = await self.assign_player()
+            if not self.player_color:
+                self.player_color = 'spectator'
+
         
         
         await self.channel_layer.group_add(
@@ -53,8 +56,8 @@ class MatchConsumer(AsyncWebsocketConsumer):
         await self.accept()
         
         
-        await self.update_connection_status(True)
-        
+        if self.player_color in ("white", "black"):
+            await self.update_connection_status(True)
         
         await self.send_game_state()
         
@@ -248,44 +251,79 @@ class MatchConsumer(AsyncWebsocketConsumer):
         except Match.DoesNotExist:
             return None
 
+    # @database_sync_to_async
+    # def assign_player(self):
+    #     match = Match.objects.get(id=self.match_id)
+        
+    #     if not self.user.is_authenticated:
+    #         return None
+        
+        
+    #     if match.player_white == self.user:
+    #         return 'white'
+    #     elif match.player_black == self.user:
+    #         return 'black'
+        
+        
+    #     if match.status == 'WAIT':
+    #         if not match.player_white:
+    #             match.player_white = self.user
+    #             match.save()
+    #             return 'white'
+    #         elif not match.player_black:
+    #             match.player_black = self.user
+    #             match.status = 'LIVE'
+    #             match.save()
+    #             return 'black'
+        
+        
+    #     return None
     @database_sync_to_async
     def assign_player(self):
-        match = Match.objects.get(id=self.match_id)
-        
         if not self.user.is_authenticated:
             return None
-        
-        
-        if match.player_white == self.user:
-            return 'white'
-        elif match.player_black == self.user:
-            return 'black'
-        
-        
-        if match.status == 'WAIT':
-            if not match.player_white:
-                match.player_white = self.user
-                match.save()
+
+        with transaction.atomic():
+            match = Match.objects.select_for_update().get(id=self.match_id)
+
+            if match.player_white == self.user:
                 return 'white'
-            elif not match.player_black:
-                match.player_black = self.user
-                match.status = 'LIVE'
-                match.save()
+            if match.player_black == self.user:
                 return 'black'
-        
-        
+
+            if match.status == 'WAIT':
+                if not match.player_white:
+                    match.player_white = self.user
+                    match.save()
+                    return 'white'
+                elif not match.player_black:
+                    match.player_black = self.user
+                    match.status = 'LIVE'
+                    match.save()
+                    return 'black'
+
         return None
 
+    # @database_sync_to_async
+    # def update_connection_status(self, connected):
+    #     match = Match.objects.get(id=self.match_id)
+        
+    #     if self.player_color == 'white':
+    #         match.white_connected = connected
+    #     elif self.player_color == 'black':
+    #         match.black_connected = connected
+        
+    #     match.save()
     @database_sync_to_async
     def update_connection_status(self, connected):
-        match = Match.objects.get(id=self.match_id)
-        
-        if self.player_color == 'white':
-            match.white_connected = connected
-        elif self.player_color == 'black':
-            match.black_connected = connected
-        
-        match.save()
+        from django.db import transaction
+        with transaction.atomic():
+            match = Match.objects.select_for_update().get(id=self.match_id)
+            if self.player_color == 'white':
+                match.white_connected = connected
+            elif self.player_color == 'black':
+                match.black_connected = connected
+            match.save()
 
     @database_sync_to_async
     def validate_move(self, fen, move_from, move_to, promotion):
