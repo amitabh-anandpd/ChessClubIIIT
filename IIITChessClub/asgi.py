@@ -7,12 +7,7 @@ import match.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'IIITChessClub.settings')
 
-
-
 django_asgi_app = get_asgi_application()
-
-
-from match import routing
 
 application = ProtocolTypeRouter({
     "http": django_asgi_app,
