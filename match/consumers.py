@@ -122,6 +122,13 @@ class MatchConsumer(AsyncWebsocketConsumer):
         match = await self.get_match()
         current_turn = 'white' if 'w' in match.current_fen.split()[1] else 'black'
         
+        if self.player_color not in ("white", "black"):
+            await self.send(json.dumps({
+                "type": "error",
+                "message": "Spectators cannot make moves"
+            }))
+            return
+
         if self.player_color != current_turn:
             await self.send(text_data=json.dumps({
                 'type': 'error',
