@@ -290,24 +290,24 @@ class MatchConsumer(AsyncWebsocketConsumer):
         if not self.user.is_authenticated:
             return None
 
-        with transaction.atomic():
-            match = Match.objects.select_for_update().get(id=self.match_id)
+        #with transaction.atomic():
+        match = Match.objects.get(id=self.match_id) #match = Match.objects.select_for_update().get(id=self.match_id)
 
-            if match.player_white == self.user:
+        if match.player_white == self.user:
+            return 'white'
+        if match.player_black == self.user:
+            return 'black'
+
+        if match.status == 'WAIT':
+            if not match.player_white:
+                match.player_white = self.user
+                match.save()
                 return 'white'
-            if match.player_black == self.user:
+            elif not match.player_black:
+                match.player_black = self.user
+                match.status = 'LIVE'
+                match.save()
                 return 'black'
-
-            if match.status == 'WAIT':
-                if not match.player_white:
-                    match.player_white = self.user
-                    match.save()
-                    return 'white'
-                elif not match.player_black:
-                    match.player_black = self.user
-                    match.status = 'LIVE'
-                    match.save()
-                    return 'black'
 
         return None
 
@@ -323,14 +323,13 @@ class MatchConsumer(AsyncWebsocketConsumer):
     #     match.save()
     @database_sync_to_async
     def update_connection_status(self, connected):
-        from django.db import transaction
-        with transaction.atomic():
-            match = Match.objects.select_for_update().get(id=self.match_id)
-            if self.player_color == 'white':
-                match.white_connected = connected
-            elif self.player_color == 'black':
-                match.black_connected = connected
-            match.save()
+        #with transaction.atomic():
+        match = Match.objects.get(id=self.match_id) #match = Match.objects.select_for_update().get(id=self.match_id)
+        if self.player_color == 'white':
+            match.white_connected = connected
+        elif self.player_color == 'black':
+            match.black_connected = connected
+        match.save()
 
     @database_sync_to_async
     def validate_move(self, fen, move_from, move_to, promotion):
