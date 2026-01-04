@@ -98,7 +98,12 @@ class TournamentMatch(models.Model):
     
     class Meta:
         ordering = ['-scheduled_at']
-        unique_together = ('tournament', 'player1', 'player2')
+        constraints = [
+            models.UniqueConstraint(
+                fields=['tournament', 'player1', 'player2'],
+                name='unique_pair'
+            )
+        ]
 
 class TournamentResult(models.Model):
     tournament = models.ForeignKey(
