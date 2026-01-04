@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tournament Details - IIIT Hyderabad Chess Club</title>
+  <meta name="description" content="Detailed information about chess tournaments including format, schedule, and live standings.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/tournament-details.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content">
+        <a href="index.html" class="nav-logo">
+          IIIT Hyderabad Chess Club
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="leaderboard.html" class="nav-link">Leaderboard</a></li>
+          <li><a href="tournaments.html" class="nav-link">Tournaments</a></li>
+          <li><a href="match.html" class="nav-link">Live Match</a></li>
+          <li><a href="newsletters.html" class="nav-link">Newsletters</a></li>
+          <li><a href="profile.html" class="nav-link">Profile</a></li>
+          <li><a href="login.html" class="nav-link">Login</a></li>
+        </ul>
+        
+        <div class="nav-controls">
+          <button class="theme-toggle" aria-label="Toggle theme">🔄</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="margin-top: 2rem;">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs">
+      <a href="tournaments.html">Tournaments</a>
+      <span>›</span>
+      <span id="tournament-name-breadcrumb">Loading...</span>
+    </nav>
+
+    <!-- Tournament Header -->
+    <div class="tournament-header-card">
+      <div class="tournament-status-badge" id="tournament-status">
+        <span class="status-indicator"></span>
+        <span class="status-text">Upcoming</span>
+      </div>
+      
+      <h1 id="tournament-title">Loading Tournament...</h1>
+      
+      <div class="tournament-meta">
+        <div class="meta-item">
+          <span class="meta-label">📅 Date</span>
+          <span class="meta-value" id="tournament-date">Loading...</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">⚡ Format</span>
+          <span class="meta-value" id="tournament-format">Loading...</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">🔄 Rounds</span>
+          <span class="meta-value" id="tournament-rounds">Loading...</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">👥 Players</span>
+          <span class="meta-value" id="tournament-players">Loading...</span>
+        </div>
+      </div>
+
+      <div class="tournament-actions">
+        <button class="btn btn-primary" id="register-btn">Register for Tournament</button>
+        <button class="btn btn-secondary" id="share-btn">Share Tournament</button>
+      </div>
+    </div>
+
+    <!-- Tournament Information Grid -->
+    <div class="grid grid-2 mb-6">
+      <!-- Tournament Details -->
+      <div class="card">
+        <h3>Tournament Information</h3>
+        <div class="tournament-info-grid">
+          <div class="info-item">
+            <span class="info-label">Time Control</span>
+            <span class="info-value" id="time-control">90 minutes + 30 second increment</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Pairing System</span>
+            <span class="info-value" id="pairing-system">Swiss System</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Entry Fee</span>
+            <span class="info-value" id="entry-fee">Free for club members</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Prize Pool</span>
+            <span class="info-value" id="prize-pool">Trophies and certificates</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Registration Deadline</span>
+            <span class="info-value" id="registration-deadline">Loading...</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Venue</span>
+            <span class="info-value" id="venue">IIIT Hyderabad Campus</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tournament Schedule -->
+      <div class="card">
+        <h3>Schedule</h3>
+        <div id="tournament-schedule" class="schedule-list">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Standings -->
+    <div class="card mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3>Current Standings</h3>
+        <div class="standings-controls">
+          <button class="btn btn-secondary btn-small" id="refresh-standings">Refresh</button>
+          <select id="round-filter" class="filter-select">
+            <option value="current">Current Round</option>
+            <option value="overall">Overall Standings</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="table-container">
+        <table class="table" id="standings-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>Score</th>
+              <th>Rating</th>
+              <th>Buchholz</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="standings-tbody">
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Round Results -->
+    <div class="card mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3>Round Results</h3>
+        <select id="round-selector" class="filter-select">
+          <option value="1">Round 1</option>
+          <option value="2">Round 2</option>
+          <option value="3">Round 3</option>
+          <option value="4">Round 4</option>
+          <option value="5">Round 5</option>
+          <option value="6">Round 6</option>
+          <option value="7">Round 7</option>
+        </select>
+      </div>
+      
+      <div id="round-results" class="round-results-grid">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Tournament Rules -->
+    <div class="card">
+      <h3>Tournament Rules & Guidelines</h3>
+      <div class="grid grid-2">
+        <div>
+          <h4>General Rules</h4>
+          <ul class="rules-list">
+            <li>FIDE Laws of Chess apply to all games</li>
+            <li>Players must arrive 15 minutes before their scheduled round</li>
+            <li>Default time is 30 minutes after round start</li>
+            <li>No outside assistance or electronic devices allowed</li>
+            <li>Game notation is required for classical tournaments</li>
+            <li>Respectful conduct expected at all times</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Pairing & Scoring</h4>
+          <ul class="rules-list">
+            <li>Swiss system pairing for all rounds</li>
+            <li>Win = 1 point, Draw = 0.5 points, Loss = 0 points</li>
+            <li>Tiebreaks: Buchholz, Direct encounter, Rating</li>
+            <li>Byes awarded only for odd number of players</li>
+            <li>Late arrivals may receive time penalties</li>
+            <li>Appeals must be made within 30 minutes of incident</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="mailto:chess@iiit.ac.in">chess@iiit.ac.in</a>
+          <a href="#">Chess.com Team</a>
+          <a href="#">Lichess Team</a>
+          <a href="#">Instagram</a>
+        </div>
+        <div class="footer-info">
+          <p>&copy; 2025 IIIT Hyderabad Chess Club. Part of the International Institute of Information Technology, Hyderabad.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/tournament-details.js"></script>
+</body>
+</html>
