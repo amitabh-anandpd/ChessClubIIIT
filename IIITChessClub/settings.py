@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'newsletters',
     'tournaments',
     'match',
-    "tournaments.apps.TournamentsConfig",
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
