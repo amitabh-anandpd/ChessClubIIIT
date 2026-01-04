@@ -2,8 +2,8 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.utils.timezone import now
 import json
-from accounts.models import User, UserProfile
-from tournaments.models import Tournament, TournamentRegistration
+from accounts.models import User
+from tournaments.models import Tournament
 from newsletters.models import Newsletter
 
 
@@ -27,23 +27,6 @@ def home(request):
     )
     top_users = User.objects.select_related("profile").order_by("-profile__rating")[:5]
     return render(request, 'home.html', {"top_users": top_users, "next_tournament": next_tournament, "latest_newsletter": latest_newsletter})
-
-def tournaments(request):
-    upcoming_tournaments = Tournament.objects.filter(
-        is_active=True,
-        start_date__gte=now().date()
-    ).order_by('start_date')
-    if request.user.is_authenticated:
-        registered_ids = set(
-            TournamentRegistration.objects.filter(user=request.user)
-            .values_list("tournament_id", flat=True)
-        )
-    else:
-        registered_ids = set()
-    return render(request, 'tournaments.html',
-                  {"upcoming_tournaments": upcoming_tournaments,
-                   "registered_ids": registered_ids,
-                   })
 
 def login(request):
     if request.user.is_authenticated:

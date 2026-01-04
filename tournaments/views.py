@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Tournament, TournamentRegistration, Match
 from .services import generate_pairings
+from django.utils.timezone import now
 
 def is_manager(user):
     return user.is_superuser
@@ -32,4 +33,21 @@ def generate_matches(request, tournament_id):
 
 def tournament_detail(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
-    return render(request, 'tournament-detail.html', {'tournament': tournament})
+    return render(request, 'tournament-details.html', {'tournament': tournament})
+
+def tournaments(request):
+    upcoming_tournaments = Tournament.objects.filter(
+        is_active=True,
+        start_date__gte=now().date()
+    ).order_by('start_date')
+    if request.user.is_authenticated:
+        registered_ids = set(
+            TournamentRegistration.objects.filter(user=request.user)
+            .values_list("tournament_id", flat=True)
+        )
+    else:
+        registered_ids = set()
+    return render(request, 'tournaments.html',
+                  {"upcoming_tournaments": upcoming_tournaments,
+                   "registered_ids": registered_ids,
+                   })
