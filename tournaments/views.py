@@ -21,6 +21,13 @@ def toggle_registration(request, tournament_id):
 @user_passes_test(is_manager)
 def generate_matches(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
+    
+    if TournamentMatch.objects.filter(tournament=tournament).exists():
+        return redirect(request.META.get("HTTP_REFERER", "tournaments"))
+    
+    if not tournament.is_active:
+        return redirect(request.META.get("HTTP_REFERER", "tournaments"))
+    
     users = [r.user for r in tournament.registrations.all()]
 
     if tournament.pairing_type.startswith('CUSTOM'):
@@ -50,10 +57,7 @@ def tournament_detail(request, tournament_id):
     })
 
 def tournaments(request):
-    upcoming_tournaments = Tournament.objects.filter(
-        is_active=True,
-        start_date__gte=now().date()
-    ).order_by('start_date')
+    upcoming_tournaments = Tournament.objects.all()
     if request.user.is_authenticated:
         registered_ids = set(
             TournamentRegistration.objects.filter(user=request.user)
@@ -61,8 +65,12 @@ def tournaments(request):
         )
     else:
         registered_ids = set()
+    tournaments_with_matches = set(
+        TournamentMatch.objects.values_list("tournament_id", flat=True)
+    )
     return render(request, 'tournaments.html',
                   {"upcoming_tournaments": upcoming_tournaments,
                    "registered_ids": registered_ids,
                    'is_manager': request.user.is_staff or request.user.is_superuser,
+                   'tournaments_with_matches': tournaments_with_matches,
                    })
