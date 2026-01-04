@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Tournament, TournamentRegistration, TournamentMatch
 from .services import generate_pairings
 from django.utils.timezone import now
+from django.views.decorators.http import require_POST
 
 def is_manager(user):
     return user.is_superuser
 
+@require_POST
 @login_required
 def toggle_registration(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
@@ -15,6 +17,7 @@ def toggle_registration(request, tournament_id):
         reg.delete()
     return redirect('tournaments')
 
+@require_POST
 @user_passes_test(is_manager)
 def generate_matches(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
