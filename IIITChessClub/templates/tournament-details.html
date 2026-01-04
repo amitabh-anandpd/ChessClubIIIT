@@ -132,12 +132,10 @@
         <div class="schedule-item">
           <div>Match {{ forloop.counter }}</div>
             <div class="schedule-status">
-                {% if m.result == "PENDING" %}
-                    Upcoming
-                {% elif m.result == "DRAW" %}
-                    Draw
+                {% if m.scheduled_at %}
+                    {{ m.scheduled_at|date:"M j, H:i" }}
                 {% else %}
-                    Finished
+                    Not scheduled
                 {% endif %}
             </div>
             {% if request.user.is_staff %}
