@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tournament, Match
+from .models import Tournament, TournamentMatch
 
 @admin.register(Tournament)
 class TournamentAdmin(admin.ModelAdmin):
@@ -7,7 +7,7 @@ class TournamentAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('is_active',)
 
-@admin.register(Match)
+@admin.register(TournamentMatch)
 class MatchAdmin(admin.ModelAdmin):
     list_display = ('tournament', 'player1', 'player2', 'result', 'winner', 'scheduled_at')
     list_filter = ('tournament', 'result')

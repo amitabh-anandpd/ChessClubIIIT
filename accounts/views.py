@@ -5,7 +5,7 @@ from django.db.models import Q, Avg
 from django.views.decorators.http import require_GET
 
 from .models import User, UserProfile
-from tournaments.models import TournamentResult, Match
+from tournaments.models import TournamentResult, TournamentMatch
 
 def user_profile(request, username):
     user = User.objects.filter(username=username).first()
@@ -53,7 +53,7 @@ def profile(request):
     users = User.objects.all()
     active_count = len(users)
     avg_rating = int(UserProfile.objects.aggregate(avg=Avg('rating'))['avg'])
-    match_count = len(Match.objects.all())
+    match_count = len(TournamentMatch.objects.all())
     curr_user = None
     if request.user.is_authenticated:
         curr_user = request.user
