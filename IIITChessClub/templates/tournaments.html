@@ -68,6 +68,14 @@
                 </button>
               </form>
               <a href="{% url 'tournament_detail' t.id %}" class="btn btn-secondary btn-small">Details</a>
+              {% if is_manager %}
+                <form method="post" action="{% url 'generate_matches' t.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-warning btn-small">
+                    Generate Matchups
+                  </button>
+                </form>
+              {% endif %}
             </div>
           </div>
           {% endfor %}

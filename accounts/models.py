@@ -40,8 +40,8 @@ class User(AbstractUser):
     
     @property
     def matches(self):
-        from tournaments.models import Match
-        return Match.objects.filter(Q(player1=self) | Q(player2=self)).select_related("tournament")
+        from tournaments.models import TournamentMatch
+        return TournamentMatch.objects.filter(Q(player1=self) | Q(player2=self)).select_related("tournament")
 
 
 class UserProfile(models.Model):

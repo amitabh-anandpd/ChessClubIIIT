@@ -64,4 +64,5 @@ def tournaments(request):
     return render(request, 'tournaments.html',
                   {"upcoming_tournaments": upcoming_tournaments,
                    "registered_ids": registered_ids,
+                   'is_manager': request.user.is_staff or request.user.is_superuser,
                    })
