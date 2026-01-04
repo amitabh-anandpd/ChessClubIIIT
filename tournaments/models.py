@@ -19,6 +19,9 @@ class Tournament(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    base_minutes = models.PositiveIntegerField(default=10)
+    increment_seconds = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -33,6 +36,9 @@ class Tournament(models.Model):
             "is_active": self.is_active,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
+            "pairing_type": self.pairing_type,
+            "base_minutes": self.base_minutes,
+            "increment_seconds": self.increment_seconds,
         }
         if include_matches:
             data["matches"] = [match.to_dict() for match in self.matches.all()]
@@ -72,9 +78,6 @@ class TournamentMatch(models.Model):
 
     scheduled_at = models.DateTimeField(default=timezone.now)
     
-    time_minutes = models.PositiveIntegerField(null=True, blank=True)
-    increment_seconds = models.PositiveIntegerField(null=True, blank=True)
-    
     completed_at = models.DateTimeField(blank=True, null=True)
     live_match = models.OneToOneField(
         "match.Match",
@@ -98,6 +101,8 @@ class TournamentMatch(models.Model):
             "result": self.result,
             "scheduled_at": self.scheduled_at.isoformat(),
             "completed_at": self.completed_at.isoformat() if self.completed_at else None,
+            "fen": self.fen,
+            "live_match_id": self.live_match.id if self.live_match else None,
         }
     
     class Meta:
