@@ -71,6 +71,10 @@ class TournamentMatch(models.Model):
     )
 
     scheduled_at = models.DateTimeField(default=timezone.now)
+    
+    time_minutes = models.PositiveIntegerField(null=True, blank=True)
+    increment_seconds = models.PositiveIntegerField(null=True, blank=True)
+    
     completed_at = models.DateTimeField(blank=True, null=True)
     live_match = models.OneToOneField(
         "match.Match",

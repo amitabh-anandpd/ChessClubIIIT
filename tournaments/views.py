@@ -25,8 +25,8 @@ def generate_matches(request, tournament_id):
     if TournamentMatch.objects.filter(tournament=tournament).exists():
         return redirect(request.META.get("HTTP_REFERER", "tournaments"))
     
-    if not tournament.is_active:
-        return redirect(request.META.get("HTTP_REFERER", "tournaments"))
+    # if not tournament.is_active:
+    #     return redirect(request.META.get("HTTP_REFERER", "tournaments"))
     
     users = [r.user for r in tournament.registrations.all()]
 
@@ -74,3 +74,19 @@ def tournaments(request):
                    'is_manager': request.user.is_staff or request.user.is_superuser,
                    'tournaments_with_matches': tournaments_with_matches,
                    })
+
+@user_passes_test(is_manager)
+def schedule_match(request, match_id):
+    match = get_object_or_404(TournamentMatch, id=match_id)
+
+    if request.method == "POST":
+        match.scheduled_at = request.POST.get("datetime")
+        match.time_minutes = request.POST.get("minutes")
+        match.increment_seconds = request.POST.get("increment")
+        match.save()
+
+        return redirect('tournament_detail', match.tournament.id)
+
+    return render(request, "schedule-match.html", {
+        "match": match
+    })

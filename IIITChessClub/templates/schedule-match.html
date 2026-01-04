@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Schedule Match</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-content">
+      <a href="{% url 'home' %}" class="nav-logo">IIIT Hyderabad Chess Club</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container" style="margin-top:2rem">
+
+<h2>Schedule Match</h2>
+
+<div class="card mb-4">
+  <strong>{{ match.player1.username }}</strong> vs <strong>{{ match.player2.username }}</strong>
+</div>
+
+<form method="post" class="card">
+  {% csrf_token %}
+
+  <div class="grid grid-2">
+    <div class="info-item">
+      <label>Date & Time</label>
+      <input type="datetime-local" name="datetime"
+             value="{{ match.scheduled_at|date:'Y-m-d\\TH:i' }}">
+    </div>
+
+    <div class="info-item">
+      <label>Minutes</label>
+      <input type="number" name="minutes" value="{{ match.time_minutes }}" min="1">
+    </div>
+
+    <div class="info-item">
+      <label>Increment (sec)</label>
+      <input type="number" name="increment" value="{{ match.increment_seconds }}" min="0">
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary mt-4">Save</button>
+</form>
+
+</main>
+</body>
+</html>

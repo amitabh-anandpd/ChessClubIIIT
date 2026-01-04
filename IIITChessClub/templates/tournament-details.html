@@ -140,6 +140,11 @@
                     Finished
                 {% endif %}
             </div>
+            {% if request.user.is_staff %}
+              <a href="{% url 'schedule_match' m.id %}" class="btn btn-secondary btn-small">
+                Schedule
+              </a>
+            {% endif %}
         </div>
       {% empty %}
         <div class="empty-state">Schedule not published yet.</div>
