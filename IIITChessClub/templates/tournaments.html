@@ -60,7 +60,7 @@
               <form method="post" action="{% url 'toggle_registration' t.id %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary btn-small">
-                  {% if user in t.registrations.all.values_list "user" %}
+                  {% if t.id in registered_ids %}
                     ✔ Registered
                   {% else %}
                     Register

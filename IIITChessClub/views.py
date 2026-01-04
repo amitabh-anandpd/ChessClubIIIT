@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.utils.timezone import now
 import json
 from accounts.models import User, UserProfile
-from tournaments.models import Tournament
+from tournaments.models import Tournament, TournamentRegistration
 from newsletters.models import Newsletter
 
 
@@ -33,7 +33,17 @@ def tournaments(request):
         is_active=True,
         start_date__gte=now().date()
     ).order_by('start_date')
-    return render(request, 'tournaments.html', {"upcoming_tournaments": upcoming_tournaments})
+    if request.user.is_authenticated:
+        registered_ids = set(
+            TournamentRegistration.objects.filter(user=request.user)
+            .values_list("tournament_id", flat=True)
+        )
+    else:
+        registered_ids = set()
+    return render(request, 'tournaments.html',
+                  {"upcoming_tournaments": upcoming_tournaments,
+                   "registered_ids": registered_ids,
+                   })
 
 def login(request):
     if request.user.is_authenticated:
