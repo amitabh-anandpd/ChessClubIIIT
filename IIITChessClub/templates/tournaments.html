@@ -56,17 +56,18 @@
             <p class="text-muted mb-4">{{ t.description|truncatewords:20 }}</p>
             {% endif %}
             <div class="flex gap-4">
-              {% comment %} <a href="#" class="btn btn-primary btn-small">Register</a> {% endcomment %}
-              <form method="post" action="{% url 'toggle_registration' t.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary btn-small">
-                  {% if t.id in registered_ids %}
-                    ✔ Registered
-                  {% else %}
-                    Register
-                  {% endif %}
-                </button>
-              </form>
+              {% if request.user.is_authenticated %}
+                <form method="post" action="{% url 'toggle_registration' t.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-primary btn-small">
+                    {% if t.id in registered_ids %}
+                      ✔ Registered
+                    {% else %}
+                      Register
+                    {% endif %}
+                  </button>
+                </form>
+              {% endif %}
               <a href="{% url 'tournament_detail' t.id %}" class="btn btn-secondary btn-small">Details</a>
               {% if is_manager %}
                 <form method="post" action="{% url 'generate_matches' t.id %}">
