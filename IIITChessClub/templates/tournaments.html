@@ -71,7 +71,8 @@
               {% if is_manager %}
                 <form method="post" action="{% url 'generate_matches' t.id %}">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-warning btn-small">
+                  <button type="submit" class="btn btn-warning btn-small"
+                    {% if not t.is_active %}disabled{% endif %}>
                     Generate Matchups
                   </button>
                 </form>
