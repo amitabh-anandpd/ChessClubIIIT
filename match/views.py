@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.views.decorators.http import require_http_methods
 from django.utils import timezone
 from .models import Match
@@ -9,6 +9,8 @@ import json
 def match_view(request, match_id):
     match = get_object_or_404(Match, id=match_id)
     
+    if match.scheduled_start and timezone.now() < match.scheduled_start:
+        return HttpResponseForbidden("This match has not started yet.")
     
     player_color = None
     if request.user.is_authenticated:

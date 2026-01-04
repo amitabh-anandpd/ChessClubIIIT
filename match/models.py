@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.utils import timezone
 
 import json
 
@@ -36,6 +37,7 @@ class Match(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='WAIT')
     current_fen = models.TextField(default='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
     move_history = models.JSONField(default=list)
+    scheduled_start = models.DateTimeField(null=True, blank=True)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(null=True, blank=True)
     result = models.CharField(max_length=10, choices=RESULT_CHOICES, default='*')
@@ -68,6 +70,8 @@ class Match(models.Model):
         return 'white' if parts[1] == 'w' else 'black'
     
     def can_join(self, user):
+        if self.scheduled_start and timezone.now() < self.scheduled_start:
+            return False
         if self.status != 'WAIT':
             return False
         if not self.player_white or not self.player_black:
