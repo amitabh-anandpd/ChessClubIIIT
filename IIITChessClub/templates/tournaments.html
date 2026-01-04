@@ -71,9 +71,14 @@
               {% if is_manager %}
                 <form method="post" action="{% url 'generate_matches' t.id %}">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-warning btn-small"
-                    {% if not t.is_active %}disabled{% endif %}>
-                    Generate Matchups
+                  <button type="submit"
+                    class="btn btn-warning btn-small"
+                    {% if t.id in tournaments_with_matches %}disabled{% endif %}>
+                    {% if t.id in tournaments_with_matches %}
+                      Matchups Generated
+                    {% else %}
+                      Generate Matchups
+                    {% endif %}
                   </button>
                 </form>
               {% endif %}
