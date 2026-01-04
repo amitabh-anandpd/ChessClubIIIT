@@ -46,6 +46,11 @@ class Tournament(models.Model):
     
     class Meta:
         ordering = ['-start_date']
+        
+    @property
+    def time_control_display(self):
+        return f"{self.base_minutes}+{self.increment_seconds}"
+
 
 
 class TournamentMatch(models.Model):
