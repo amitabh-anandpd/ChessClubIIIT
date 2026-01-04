@@ -64,12 +64,7 @@ class TournamentMatch(models.Model):
     player2 = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='matches_as_player2'
     )
-    
-    fen = models.TextField(null=True, blank=True)
-
-    winner = models.ForeignKey(
-        User, on_delete=models.SET_NULL, blank=True, null=True, related_name='matches_won'
-    )
+    match_created = models.BooleanField(default=False)
     result = models.CharField(
         max_length=20,
         choices=[
@@ -102,12 +97,12 @@ class TournamentMatch(models.Model):
             "tournament_name": self.tournament.name,
             "player1": self.player1.to_dict(),
             "player2": self.player2.to_dict(),
-            "winner": self.winner.to_dict() if self.winner else None,
-            "result": self.result,
             "scheduled_at": self.scheduled_at.isoformat(),
             "completed_at": self.completed_at.isoformat() if self.completed_at else None,
-            "fen": self.fen,
             "live_match_id": self.live_match.id if self.live_match else None,
+            "result": self.result,
+            "match_created": self.match_created,
+            "fen": self.fen,
         }
     
     class Meta:

@@ -9,6 +9,6 @@ class TournamentAdmin(admin.ModelAdmin):
 
 @admin.register(TournamentMatch)
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ('tournament', 'player1', 'player2', 'result', 'winner', 'scheduled_at')
+    list_display = ('tournament', 'player1', 'player2', 'result', 'scheduled_at')
     list_filter = ('tournament', 'result')
     search_fields = ('player1__username', 'player2__username')
