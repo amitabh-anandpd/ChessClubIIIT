@@ -25,6 +25,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('', include('leaderboard.urls')),
     path('', include('accounts.urls')),
+    path('tournaments/', include('tournaments.urls')),
     path('newsletters/', include('newsletters.urls')),
     path('tournaments/', tournaments, name='tournaments'),
     path('login/', login, name='login'),

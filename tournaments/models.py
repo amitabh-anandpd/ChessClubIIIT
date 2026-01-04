@@ -4,6 +4,14 @@ from accounts.models import User
 
 class Tournament(models.Model):
     name = models.CharField(max_length=200)
+    PAIRING_TYPE_CHOICES = [
+        ('RANDOM', 'Random (Tournament)'),
+        ('ROUND_ROBIN', 'Round Robin'),
+        ('CUSTOM_TOURNAMENT', 'Custom Tournament'),
+        ('CUSTOM_ROUND_ROBIN', 'Custom Round Robin'),
+    ]
+
+    pairing_type = models.CharField(max_length=30, choices=PAIRING_TYPE_CHOICES, default='RANDOM')
     description = models.TextField(blank=True, null=True)
     start_date = models.DateField(default=timezone.now)
     end_date = models.DateField(blank=True, null=True)
@@ -64,6 +72,13 @@ class Match(models.Model):
 
     scheduled_at = models.DateTimeField(default=timezone.now)
     completed_at = models.DateTimeField(blank=True, null=True)
+    live_match = models.OneToOneField(
+        "match.Match",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="tournament_pairing"
+    )
 
     def __str__(self):
         return f"{self.tournament.name}: {self.player1.username} vs {self.player2.username}"
@@ -122,3 +137,15 @@ class TournamentResult(models.Model):
             else:
                 return f"{self.position}th Place"
         return "Participant"
+    
+class TournamentRegistration(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name="registrations")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tournament_registrations")
+    registered_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("tournament", "user")
+
+    def __str__(self):
+        return f"{self.user.username} in {self.tournament.name}"
+
