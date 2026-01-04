@@ -42,7 +42,7 @@ class Tournament(models.Model):
         ordering = ['-start_date']
 
 
-class Match(models.Model):
+class TournamentMatch(models.Model):
     tournament = models.ForeignKey(
         Tournament, on_delete=models.CASCADE, related_name='matches'
     )

@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Tournament, TournamentRegistration, Match
+from .models import Tournament, TournamentRegistration, TournamentMatch
 from .services import generate_pairings
 from django.utils.timezone import now
 
@@ -25,9 +25,9 @@ def generate_matches(request, tournament_id):
 
     pairings = generate_pairings(tournament, users)
 
-    Match.objects.filter(tournament=tournament).delete()
+    TournamentMatch.objects.filter(tournament=tournament).delete()
     for u1, u2 in pairings:
-        Match.objects.create(tournament=tournament, player1=u1, player2=u2)
+        TournamentMatch.objects.create(tournament=tournament, player1=u1, player2=u2)
 
     return redirect('tournaments')
 
