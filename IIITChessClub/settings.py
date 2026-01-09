@@ -100,7 +100,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'IIITChessClub.wsgi.application'
-REDIS_URL = os.getenv("REDIS_URL")
+REDIS_URL = os.environ.get(
+    "REDIS_URL"
+)
+
 if not REDIS_URL:
     raise RuntimeError("REDIS_URL not set")
 CHANNEL_LAYERS = {

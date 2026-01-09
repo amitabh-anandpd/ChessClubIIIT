@@ -39,6 +39,19 @@
       <p class="text-muted">Competitive chess events for all skill levels</p>
     </div>
 
+    <!-- Display messages -->
+    {% if messages %}
+    <div style="margin-bottom: 1.5rem;">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" style="padding: 1rem; border-radius: 0.5rem; margin-bottom: 0.5rem; 
+           background: {% if message.tags == 'success' %}var(--success){% elif message.tags == 'error' %}var(--danger){% elif message.tags == 'warning' %}var(--warning){% else %}var(--info){% endif %}; 
+           color: white;">
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
     <!-- Upcoming Tournaments -->
       <section class="mb-6">
         <h2 class="mb-4">🏆 Upcoming Tournaments</h2>
@@ -47,48 +60,79 @@
         <div id="upcoming-tournaments" class="grid grid-2">
           {% for t in upcoming_tournaments %}
           <div class="card tournament-card">
-            <h3 class="tournament-title">{{ t.name }}</h3>
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+              <h3 class="tournament-title">{{ t.name }}</h3>
+              {% if t.is_multi_round %}
+              <span class="badge" style="background: var(--accent); color: white; font-size: 0.75rem;">
+                <i data-lucide="layers" style="width: 12px; height: 12px;"></i>
+                Multi-Round
+              </span>
+              {% endif %}
+            </div>
+            
             <p class="text-muted mb-2">
+              <i data-lucide="calendar" style="width: 14px; height: 14px;"></i>
               {{ t.start_date|date:"F j, Y" }}
               {% if t.end_date %} – {{ t.end_date|date:"F j, Y" }}{% endif %}
             </p>
+            
+            <p class="text-muted mb-2">
+              <i data-lucide="shuffle" style="width: 14px; height: 14px;"></i>
+              {{ t.get_pairing_type_display }}
+              {% if t.is_multi_round and t.id in tournaments_with_matches %}
+              <span style="color: var(--accent);">• Round {{ t.current_round }}</span>
+              {% endif %}
+            </p>
+            
             {% if t.description %}
             <p class="text-muted mb-4">{{ t.description|truncatewords:20 }}</p>
             {% endif %}
-            <div class="flex gap-4">
+            
+            <div class="flex gap-4" style="flex-wrap: wrap;">
               {% if request.user.is_authenticated %}
                 <form method="post" action="{% url 'toggle_registration' t.id %}">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-primary btn-small">
                     {% if t.id in registered_ids %}
-                      ✔ Registered
+                      ✓ Registered
                     {% else %}
                       Register
                     {% endif %}
                   </button>
                 </form>
               {% endif %}
-              <a href="{% url 'tournament_detail' t.id %}" class="btn btn-secondary btn-small">Details</a>
+              
+              <a href="{% url 'tournament_detail' t.id %}" class="btn btn-secondary btn-small">
+                <i data-lucide="eye" style="width: 14px; height: 14px;"></i>
+                Details
+              </a>
+              
               {% if is_manager %}
-                <form method="post" action="{% url 'generate_matches' t.id %}">
-                  {% csrf_token %}
-                  <button type="submit"
-                    class="btn btn-warning btn-small"
-                    {% if t.id in tournaments_with_matches %}disabled{% endif %}>
-                    {% if t.id in tournaments_with_matches %}
-                      Matchups Generated
-                    {% else %}
-                      Generate Matchups
-                    {% endif %}
-                  </button>
-                </form>
+                {% if t.id in tournaments_with_matches %}
+                  <!-- Tournament has matches -->
+                  <span class="btn btn-success btn-small" style="opacity: 0.7; cursor: default;">
+                    <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>
+                    Matches Generated
+                  </span>
+                {% else %}
+                  <!-- Can generate matches -->
+                  <form method="post" action="{% url 'generate_matches' t.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning btn-small">
+                      <i data-lucide="zap" style="width: 14px; height: 14px;"></i>
+                      Generate Matches
+                    </button>
+                  </form>
+                {% endif %}
               {% endif %}
             </div>
           </div>
           {% endfor %}
         </div>
         {% else %}
-        <p class="text-muted">No upcoming tournaments right now. Stay tuned!</p>
+        <div class="card">
+          <p class="text-muted text-center">No upcoming tournaments right now. Stay tuned!</p>
+        </div>
         {% endif %}
       </section>
 
@@ -110,22 +154,36 @@
           <h4>Tournament Formats</h4>
           <p>We organize various formats to suit different preferences and skill levels:</p>
           <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
-            <li><strong>Classical:</strong> 90 minutes + 30 second increment</li>
-            <li><strong>Rapid:</strong> 25 minutes + 10 second increment</li>
-            <li><strong>Blitz:</strong> 5 minutes + 3 second increment</li>
-            <li><strong>Swiss System:</strong> Most common pairing method</li>
+            <li><strong>Random:</strong> Players paired randomly</li>
+            <li><strong>Round Robin:</strong> Everyone plays everyone</li>
+            <li><strong>Swiss System:</strong> Pair players with similar scores</li>
+            <li><strong>Knockout:</strong> Single elimination bracket</li>
           </ul>
         </div>
       </div>
     </div>
 
-    <!-- Past Tournaments -->
-    <section class="mb-6">
-      <h2 class="mb-4">📚 Tournament History</h2>
-      <div id="past-tournaments" class="grid grid-2">
-        <!-- Populated by JavaScript -->
+    <!-- Time Controls -->
+    <div class="card mb-6">
+      <h3>Time Control Formats</h3>
+      <div class="grid grid-3">
+        <div class="text-center" style="padding: 1rem; border: 1px solid var(--border); border-radius: 0.5rem;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</div>
+          <h4>Blitz</h4>
+          <p class="text-muted">3-10 minutes per player</p>
+        </div>
+        <div class="text-center" style="padding: 1rem; border: 1px solid var(--border); border-radius: 0.5rem;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏃</div>
+          <h4>Rapid</h4>
+          <p class="text-muted">10-30 minutes per player</p>
+        </div>
+        <div class="text-center" style="padding: 1rem; border: 1px solid var(--border); border-radius: 0.5rem;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">♟️</div>
+          <h4>Classical</h4>
+          <p class="text-muted">30+ minutes per player</p>
+        </div>
       </div>
-    </section>
+    </div>
 
     <!-- Tournament Rules -->
     <div class="card mb-6">
@@ -154,70 +212,43 @@
       </div>
     </div>
 
-    <!-- Stats and Records -->
-    <!--<div class="card mb-6">-->
-    <!--  <h3>Tournament Statistics</h3>-->
-    <!--  <div class="grid grid-3">-->
-    <!--    <div class="text-center">-->
-    <!--      <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent);">47</div>-->
-    <!--      <div class="text-muted">Tournaments Held</div>-->
-    <!--      <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Since 2020</div>-->
-    <!--    </div>-->
-    <!--    <div class="text-center">-->
-    <!--      <div style="font-size: 2.5rem; font-weight: bold; color: var(--success);">312</div>-->
-    <!--      <div class="text-muted">Total Participants</div>-->
-    <!--      <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Unique players</div>-->
-    <!--    </div>-->
-    <!--    <div class="text-center">-->
-    <!--      <div style="font-size: 2.5rem; font-weight: bold; color: var(--warning);">1,847</div>-->
-    <!--      <div class="text-muted">Games Played</div>-->
-    <!--      <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Recorded games</div>-->
-    <!--    </div>-->
-    <!--  </div>-->
-    <!--</div>-->
-
-    <!-- Champions Gallery -->
-    {% comment %} <div class="card mb-6">
-      <h3>Recent Champions</h3>
-      <div class="table-container">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Tournament</th>
-              <th>Winner</th>
-              <th>Score</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Autumn Open 2024</td>
-              <td><a href="{% url 'profile' %}" class="match-opponent">Arjun Patel</a></td>
-              <td>6.5/7</td>
-              <td>Nov 2024</td>
-            </tr>
-            <tr>
-              <td>Blitz Championship 2024</td>
-              <td><a href="{% url 'profile' %}" class="match-opponent">Priya Sharma</a></td>
-              <td>8/9</td>
-              <td>Oct 2024</td>
-            </tr>
-            <tr>
-              <td>Rapid Open 2024</td>
-              <td><a href="{% url 'profile' %}" class="match-opponent">Vikash Kumar</a></td>
-              <td>5/6</td>
-              <td>Sep 2024</td>
-            </tr>
-            <tr>
-              <td>Summer Championship</td>
-              <td><a href="{% url 'profile' %}" class="match-opponent">Ananya Singh</a></td>
-              <td>7/9</td>
-              <td>Jul 2024</td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- Tournament Format Explanations -->
+    <div class="card mb-6">
+      <h3>Understanding Tournament Formats</h3>
+      
+      <div style="margin-bottom: 2rem;">
+        <h4 style="color: var(--accent);">
+          <i data-lucide="shuffle" style="width: 18px; height: 18px;"></i>
+          Swiss System
+        </h4>
+        <p>Players are paired each round based on their current score. Those with similar scores face each other. No one is eliminated - all players participate in every round. Typically runs 5-7 rounds depending on the number of participants.</p>
+        <p class="text-muted" style="font-size: 0.9rem; margin-top: 0.5rem;">
+          <strong>Best for:</strong> Competitive tournaments where you want a clear winner without eliminating players.
+        </p>
       </div>
-    </div> {% endcomment %}
+      
+      <div style="margin-bottom: 2rem;">
+        <h4 style="color: var(--accent);">
+          <i data-lucide="trophy" style="width: 18px; height: 18px;"></i>
+          Knockout
+        </h4>
+        <p>Single elimination bracket format. Players are paired in the first round, and winners advance to the next round while losers are eliminated. Continues until only one player remains as champion.</p>
+        <p class="text-muted" style="font-size: 0.9rem; margin-top: 0.5rem;">
+          <strong>Best for:</strong> Fast-paced tournaments with clear bracket progression and a dramatic finals match.
+        </p>
+      </div>
+      
+      <div>
+        <h4 style="color: var(--accent);">
+          <i data-lucide="grid" style="width: 18px; height: 18px;"></i>
+          Round Robin
+        </h4>
+        <p>Every player faces every other player exactly once. The player with the highest score at the end wins. Ensures fairness as everyone plays the same opponents.</p>
+        <p class="text-muted" style="font-size: 0.9rem; margin-top: 0.5rem;">
+          <strong>Best for:</strong> Smaller tournaments (under 12 players) where you want comprehensive head-to-head results.
+        </p>
+      </div>
+    </div>
 
     <!-- Call to Action -->
     <div class="card text-center" style="background: linear-gradient(135deg, var(--accent), var(--accent-hover)); color: white;">
