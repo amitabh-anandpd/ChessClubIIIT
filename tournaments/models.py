@@ -7,6 +7,8 @@ class Tournament(models.Model):
     PAIRING_TYPE_CHOICES = [
         ('RANDOM', 'Random (Tournament)'),
         ('ROUND_ROBIN', 'Round Robin'),
+        ('SWISS', 'Swiss System'),
+        ('KNOCKOUT', 'Knockout (Single Elimination)'),
         ('CUSTOM_TOURNAMENT', 'Custom Tournament'),
         ('CUSTOM_ROUND_ROBIN', 'Custom Round Robin'),
     ]
@@ -22,6 +24,9 @@ class Tournament(models.Model):
     
     base_minutes = models.PositiveIntegerField(default=10)
     increment_seconds = models.PositiveIntegerField(default=0)
+    
+    
+    current_round = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return self.name
@@ -39,6 +44,7 @@ class Tournament(models.Model):
             "pairing_type": self.pairing_type,
             "base_minutes": self.base_minutes,
             "increment_seconds": self.increment_seconds,
+            "current_round": self.current_round,
         }
         if include_matches:
             data["matches"] = [match.to_dict() for match in self.matches.all()]
@@ -50,7 +56,11 @@ class Tournament(models.Model):
     @property
     def time_control_display(self):
         return f"{self.base_minutes}+{self.increment_seconds}"
-
+    
+    @property
+    def is_multi_round(self):
+        """Check if tournament uses multiple rounds"""
+        return self.pairing_type in ['SWISS', 'KNOCKOUT']
 
 
 class TournamentMatch(models.Model):
@@ -64,6 +74,10 @@ class TournamentMatch(models.Model):
     player2 = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='matches_as_player2'
     )
+    
+    
+    round_number = models.PositiveIntegerField(default=1)
+    
     match_created = models.BooleanField(default=False)
     result = models.CharField(
         max_length=20,
@@ -102,11 +116,20 @@ class TournamentMatch(models.Model):
             "live_match_id": self.live_match.id if self.live_match else None,
             "result": self.result,
             "match_created": self.match_created,
-            "fen": self.fen,
+            "round_number": self.round_number,
         }
     
+    @property
+    def winner(self):
+        """Get the winner of the match"""
+        if self.result == 'PLAYER1':
+            return self.player1
+        elif self.result == 'PLAYER2':
+            return self.player2
+        return None
+    
     class Meta:
-        ordering = ['-scheduled_at']
+        ordering = ['-round_number', '-scheduled_at']
         constraints = [
             models.UniqueConstraint(
                 fields=['tournament', 'player1', 'player2'],
@@ -162,4 +185,3 @@ class TournamentRegistration(models.Model):
 
     def __str__(self):
         return f"{self.user.username} in {self.tournament.name}"
-

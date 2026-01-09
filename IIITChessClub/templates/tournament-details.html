@@ -70,6 +70,12 @@
         <span class="meta-label"><i data-lucide="users"></i> Players</span>
         {{ registrations|length }}
     </div>
+    {% if tournament.is_multi_round %}
+    <div class="meta-item">
+        <span class="meta-label"><i data-lucide="layers"></i> Current Round</span>
+        Round {{ tournament.current_round }}
+    </div>
+    {% endif %}
   </div>
     {% if user.is_authenticated %}
       <div class="tournament-actions">
@@ -80,7 +86,7 @@
               {% csrf_token %}
               <button type="submit" class="btn btn-primary">
                   {% if tournament.id in registered_ids %}
-                  ✔ Registered
+                  ✓ Registered
                   {% else %}
                   Register
                   {% endif %}
@@ -92,7 +98,7 @@
 
               {% if tournament.id in registered_ids %}
               <button class="btn btn-primary" disabled>
-                  ✔ Registered
+                  ✓ Registered
               </button>
               {% else %}
               <button class="btn btn-secondary" disabled>
@@ -100,6 +106,15 @@
               </button>
               {% endif %}
 
+          {% endif %}
+
+          {% if is_manager and can_generate_next %}
+          <form method="post" action="{% url 'generate_next_round' tournament.id %}" style="display: inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success">
+                  <i data-lucide="arrow-right"></i> Generate Round {{ tournament.current_round|add:1 }}
+              </button>
+          </form>
           {% endif %}
 
       </div>
@@ -132,9 +147,9 @@
   <div class="card">
     <h3>Schedule</h3>
     <div class="schedule-list">
-      {% for m in matches %}
+      {% for m in matches|slice:":5" %}
         <div class="schedule-item">
-          <div>Match {{ forloop.counter }}</div>
+          <div>{{ m.player1.username }} vs {{ m.player2.username }}</div>
             <div class="schedule-status">
                 {% if m.scheduled_at %}
                     {{ m.scheduled_at|date:"M j, H:i" }}
@@ -151,37 +166,121 @@
       {% empty %}
         <div class="empty-state">Schedule not published yet.</div>
       {% endfor %}
+      {% if matches|length > 5 %}
+        <div class="text-muted text-center" style="margin-top: 1rem;">
+          Showing 5 of {{ matches|length }} matches
+        </div>
+      {% endif %}
     </div>
   </div>
 </div>
 
 <div class="card mb-6">
-  <h3>Current Standings</h3>
-  <div class="empty-state">
-    Standings will appear once the tournament begins.
+  <h3><i data-lucide="trophy"></i> Current Standings</h3>
+  {% if standings %}
+  <div class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Player</th>
+          <th>Points</th>
+          <th>Games</th>
+          <th>W-D-L</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for standing in standings %}
+        <tr>
+          <td>
+            <strong style="{% if forloop.counter == 1 %}color: gold{% elif forloop.counter == 2 %}color: silver{% elif forloop.counter == 3 %}color: #cd7f32{% endif %}">
+              {{ forloop.counter }}
+            </strong>
+          </td>
+          <td>
+            <a href="{% url 'profile' %}" class="match-opponent">{{ standing.user.username }}</a>
+          </td>
+          <td><strong>{{ standing.points }}</strong></td>
+          <td>{{ standing.games }}</td>
+          <td class="text-muted">{{ standing.wins }}-{{ standing.draws }}-{{ standing.losses }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
+  {% else %}
+  <div class="empty-state">
+    Standings will appear once matches are completed.
+  </div>
+  {% endif %}
 </div>
 
 <div class="card mb-6">
-  <h3>Round Results</h3>
-  <div class="round-results-grid">
-    {% for m in matches %}
-        <div>{{ m.player1.username }} vs {{ m.player2.username }} — 
-            {% if m.result == "PENDING" %}
-                Pending
-            {% elif m.result == "DRAW" %}
-                Draw
-            {% elif m.result == "PLAYER1" %}
-                {{ m.player1.username }} won
-            {% elif m.result == "PLAYER2" %}
-                {{ m.player2.username }} won
-            {% endif %}
+  <h3><i data-lucide="list"></i> Matches by Round</h3>
+  
+  {% if matches_by_round %}
+    {% for round_num, round_matches in matches_by_round.items %}
+    <div style="margin-bottom: 2rem;">
+      <h4 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+        <i data-lucide="circle-dot"></i>
+        Round {{ round_num }}
+        <span class="text-muted" style="font-size: 0.9rem; font-weight: normal;">
+          ({{ round_matches|length }} match{% if round_matches|length != 1 %}es{% endif %})
+        </span>
+      </h4>
+      
+      <div class="round-results-grid">
+        {% for m in round_matches %}
+        <div class="match-result-card" style="padding: 1rem; border: 1px solid var(--border); border-radius: 0.5rem; margin-bottom: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong>{{ m.player1.username }}</strong> 
+              <span style="color: var(--text-muted)">vs</span> 
+              <strong>{{ m.player2.username }}</strong>
+            </div>
+            <div>
+              {% if m.result == "PENDING" %}
+                <span class="badge" style="background: var(--warning); color: white;">Pending</span>
+              {% elif m.result == "DRAW" %}
+                <span class="badge" style="background: var(--text-muted); color: white;">Draw ½-½</span>
+              {% elif m.result == "PLAYER1" %}
+                <span class="badge" style="background: var(--success); color: white;">{{ m.player1.username }} won 1-0</span>
+              {% elif m.result == "PLAYER2" %}
+                <span class="badge" style="background: var(--success); color: white;">{{ m.player2.username }} won 1-0</span>
+              {% endif %}
+            </div>
+          </div>
+          {% if m.scheduled_at %}
+          <div class="text-muted" style="font-size: 0.85rem; margin-top: 0.5rem;">
+            <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
+            {{ m.scheduled_at|date:"F j, Y - H:i" }}
+          </div>
+          {% endif %}
         </div>
-    {% empty %}
-      <div class="empty-state">No results yet.</div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">No matches yet. Matches will appear once generated.</div>
+  {% endif %}
+</div>
+
+{% if registrations %}
+<div class="card mb-6">
+  <h3><i data-lucide="users"></i> Registered Players ({{ registrations|length }})</h3>
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+    {% for reg in registrations %}
+    <div style="padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; text-align: center;">
+      <a href="{% url 'profile' %}" class="match-opponent">{{ reg.user.username }}</a>
+      <div class="text-muted" style="font-size: 0.8rem; margin-top: 0.25rem;">
+        Registered {{ reg.registered_at|date:"M j" }}
+      </div>
+    </div>
     {% endfor %}
   </div>
 </div>
+{% endif %}
 
 </main>
 
